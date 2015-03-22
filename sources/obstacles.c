@@ -1,41 +1,13 @@
-#ifndef DATA_H
-#define DATA_H
+#include <stdio.h>
+#include <stdlib.h>
+#include "geometrie.h"
+#include "obstacles.h"
 
-#define ROBOT_R 190
-
-#define TABLE_H 2000
-#define TABLE_W 3000
-
-#define GRID_W 100
-#define GRID_H 100
-#define GRID_DW 0
-#define GRID_DH 0
-
-typedef struct {
-    int x;
-    int y;
-} _coord;
-typedef _coord coord;
-
-// Structure définissant un obstacle
-typedef struct {
-    int type;       // 0 pour un trait, 1 pour un cercle
-    coord point1;
-    coord point2;
-    int rayon;   // Utilisé pour les pieds, non pour le plateau
-} _Obstacle;
-typedef _Obstacle Obstacle;
-
-void addAllObstaclesStatiques();
-void addObstacleRond(coord centre, int rayon);
-
-
-#define NOMBRE_OBSTACLES_STATIQUES 34
-#define NOMBRE_OBSTACLES_NON_STATIQUES_MAX 4
 
 Obstacle ObstaclesStatiques[NOMBRE_OBSTACLES_STATIQUES];
 int nombreObstaclesNonStatiques=0;
-Obstacle ObstaclesNonStatiques[NOMBRE_OBSTACLES_NON_STATIQUES_MAX]; // Verres + pieds
+Obstacle ObstaclesNonStatiques[NOMBRE_OBSTACLES_NON_STATIQUES_MAX];
+// Tableau définissant les obstacles. À NE PAS MODIFIER POUR 2015 !
 
 //Type, 1x/centrex,         1y/centrey,         2x,                 2y
 const int obstacles[NOMBRE_OBSTACLES_STATIQUES][5]={
@@ -88,4 +60,84 @@ const int obstacles[NOMBRE_OBSTACLES_STATIQUES][5]={
     {0, 1222+ROBOT_R,       0,              1222+ROBOT_R,       400}
 };
 
-#endif // DATA_H
+// Fonctions d'initialisation
+void addAllObstaclesStatiques(){
+    int i;
+    for (i = 0; i < NOMBRE_OBSTACLES_STATIQUES ; ++i)
+        addObstacleStatique(obstacles[i], i);
+}
+void addObstacleStatique(const int valeurs[], int i){
+    Obstacle obstacle;
+    coord point;
+    obstacle.type   = valeurs[0];
+            point.x = valeurs[1];
+            point.y = valeurs[2];
+    obstacle.point1 = point;
+            point.x = valeurs[3];
+            point.y = valeurs[4];
+    obstacle.point2 = point;
+
+    obstacle.rayon  = 0;
+
+    ObstaclesStatiques[i]=obstacle;
+}
+
+
+void addObstacleNonStatiqueRond(coord centre, int rayon) {
+    Obstacle obstacle;
+    obstacle.type   = 1;
+    obstacle.point1 = centre;
+    obstacle.rayon  = rayon;
+    ObstaclesNonStatiques[nombreObstaclesNonStatiques++]=obstacle;
+}
+
+
+
+
+int passagePossible(coord a, coord b) {
+    int i;
+    for (i = 0; i < NOMBRE_OBSTACLES_STATIQUES; ++i)
+        if (conflitPassageObstacle(a, b, ObstaclesStatiques[i]))
+            return 0;
+    for (i = 0; i < nombreObstaclesNonStatiques; ++i)
+        if (conflitPassageObstacle(a, b, ObstaclesNonStatiques[i]))
+            return 0;
+    return 1;
+}
+
+int conflitPassageObstacle(coord a, coord b, Obstacle obstacle) {
+    switch (obstacle.type) {
+        case 0:     // Segment
+            return SegmentsIntersectent(a, b, obstacle.point1, obstacle.point2);
+            break;
+        case 1:     // Cercle
+            return (distancePointSegment(a, b, obstacle.point1) <= ROBOT_R + obstacle.rayon);
+            break;
+        default:
+            return 1;
+            break;
+    }
+}
+
+
+coord pointLePlusProche(coord origine) {
+    coord origine_new;
+    origine_new.x = ((origine.x - GRID_DX) % GRID_X) + GRID_DX;
+    origine_new.y = ((origine.y - GRID_DY) % GRID_Y) + GRID_DY;
+    if (passagePossible(origine, origine_new)==0) {
+        origine_new.x+=GRID_DX;
+        if (passagePossible(origine, origine_new)==0) {
+            origine_new.x+=GRID_DX;
+            if (passagePossible(origine, origine_new)==0) {
+                origine_new.x-=GRID_DX;
+                if (passagePossible(origine, origine_new)==0)
+                    origine_new.x=-1;
+                    origine_new.y=-1;
+
+            }
+        }
+    }
+    return origine_new;
+}
+
+

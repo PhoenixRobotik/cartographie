@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "point.h"
 #include "BIFO.h"
-#include "PointPointerVector.h"
+#include "PointPointer_PointList.h"
 #include "astar.h"
 #include "data.h"
 

@@ -23,14 +23,14 @@ int main() {/*
     list_init(&vectorA);
 
     Point a = newVoidPoint();
-    printf("%d\n", list_append(&vectorA,a));
-    printf("%d\n", list_append(&vectorA,a));
+    printf("element %d\n", list_append(&vectorA,a));
+    printf("élément %d\n", list_append(&vectorA,a));
     a.visited=1732;
-    printf("%d\n", list_append(&vectorA,a));
+    printf("élément %d\n", list_append(&vectorA,a));
 	int i = list_get(&vectorA, 2).visited;
-	printf("%d\n", i);
-	printf("%d\n", vectorA.size);
-    printf("%lu\n", sizeof(Point));
+	printf("élément 2, valeur : %d\n", i);
+	printf("taille liste %d\n", vectorA.size);
+    printf("taille structure Point %lu\n", sizeof(Point));
 
     return 0;
 }

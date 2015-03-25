@@ -16,8 +16,7 @@
 typedef struct {
     int x;
     int y;
-} _coord;
-typedef _coord coord;
+} coord;
 
 float distance(coord pointA, coord pointB);
 

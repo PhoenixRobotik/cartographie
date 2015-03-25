@@ -5,7 +5,7 @@ LDFLAGS=-lm
 SDLFLAGS=-lSDL -lSDL_image -lGL -lGLU -lSOIL
 EXEC=carto_robot
 
-SOURCES=main.c geometrie.c obstacles.c point.c pointList.c # pathfinding.c
+SOURCES=main.c geometrie.c obstacles.c point.c pointList.c bestInFirstOut.c # pathfinding.c
 HEADERS=$(SOURCES:.c=.h)
 OBJECTS=$(SOURCES:.c=.o)
 

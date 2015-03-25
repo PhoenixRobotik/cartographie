@@ -4,14 +4,15 @@
 #define ENORMOUS_COST 99999
 // Juste une facilité pour identifier le noeud de début et de cible.
 typedef enum {
-    DEBUT,
     NOEUD,
-    CIBLE
+    DEBUT,
+    CIBLE,
+    ERREUR
 } PointType;
 
 // Définit complètement un noeud (au détail près de open)
-struct _Point {
-    coord pos;          // Les coordonnées du point (en mm)
+typedef struct  {
+    coord coord;          // Les coordonnées du point (en mm)
     PointType type;
 
     float gScore;       // Le coût pour y aller
@@ -21,8 +22,7 @@ struct _Point {
 
     int parentPointRank;// Le rang du point parent dans la liste des points visités ou -1
     //struct _Point* parent;  // Le parent dans le chemin. Est défini quand on le visite.
-};
-typedef struct _Point Point;
+} Point;
 
 Point newVoidPoint();
 Point newPoint(coord position, PointType type);
@@ -30,6 +30,7 @@ Point newPoint(coord position, PointType type);
 
 double distance_heuristique(Point a, Point b);
 
+int equal(Point a, Point b);
 int is_better(Point a, Point b);
 
 

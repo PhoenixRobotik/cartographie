@@ -16,7 +16,7 @@ Point newVoidPoint(){
 
 Point newPoint(coord position, PointType type){
     Point point = newVoidPoint();
-    point.pos=position;
+    point.coord=position;
     point.type = type;
     return point;
 }
@@ -25,12 +25,15 @@ Point newPoint(coord position, PointType type){
 
 double distance_heuristique(Point a, Point b) {
 	// TODO ajouter un coeff si nécessaire
-    return 1.2*distance(a.pos, b.pos);
+    return 1.2*distance(a.coord, b.coord);
 }
 
+int equal(Point a, Point b) {
+    return (   a.coord.x == b.coord.x
+            && a.coord.y == b.coord.y );
+
+}
 
 int is_better(Point a, Point b) {
-    if (a.fScore < b.fScore)
-        return 0;
-    return 1;
+    return (a.fScore < b.fScore);
 }

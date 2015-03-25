@@ -3,7 +3,8 @@
 
 /*
     Cette "classe" nous permet de gérer une liste de points.
-    Ceci nous permet d'enregistrer la liste de tous les points ouverts ou enregistrés,
+    Cette liste doit grandir mais on ne retire JAMAIS d'éléments.
+    Ceci nous permet d'enregistrer tous les points visités, et le chemin final,
     sans initialiser un tableau d'une taille délirante.
 */
 
@@ -11,7 +12,7 @@
 // How many we allocate at once
 #define LIST_MALLOC_SIZE 5
 
-// Define a vector type
+// Define a list type
 typedef struct {
     int size;       // slots used so far
     int capacity;   // total available slots
@@ -20,14 +21,14 @@ typedef struct {
 } PointList;
 
 //      Init, free and "make bigger if full"
-void list_init(PointList *vector);
-void list_free(PointList *vector);
-void list_extend_if_full(PointList *vector);
+void list_init(PointList *list);
+void list_free(PointList *list);
+void list_extend_if_full(PointList *list);
 
 //      Getters and setters
 // Retourne l'index du nouvel élément
-int list_append(PointList *vector, Point value);
+int list_append(PointList *list, Point value);
 
-Point list_get(PointList *vector, int index);
+Point list_get(PointList *list, int index);
 
 #endif // POINTLIST_H

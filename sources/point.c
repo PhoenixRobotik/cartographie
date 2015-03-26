@@ -49,8 +49,8 @@ Point getVoisin(Point point, int i) {
         voisin.type = ERREUR;
     else {
         coord coordonnees = point.coord;
-        coordonnees.x = coordonnees_voisins[i][0];
-        coordonnees.y = coordonnees_voisins[i][1];
+        coordonnees.x += GRID_X*coordonnees_voisins[i][0];
+        coordonnees.y += GRID_Y*coordonnees_voisins[i][1];
         voisin.coord = coordonnees;
     }
 

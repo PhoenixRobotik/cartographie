@@ -121,23 +121,28 @@ int conflitPassageObstacle(coord a, coord b, Obstacle obstacle) {
 
 
 coord pointLePlusProche(coord origine) {
-    coord origine_new;
-    origine_new.x = ((origine.x - GRID_DX) % GRID_X) + GRID_DX;
-    origine_new.y = ((origine.y - GRID_DY) % GRID_Y) + GRID_DY;
-    if (passagePossible(origine, origine_new)==0) {
-        origine_new.x+=GRID_DX;
-        if (passagePossible(origine, origine_new)==0) {
-            origine_new.x+=GRID_DX;
-            if (passagePossible(origine, origine_new)==0) {
-                origine_new.x-=GRID_DX;
-                if (passagePossible(origine, origine_new)==0)
-                    origine_new.x=-1;
-                    origine_new.y=-1;
+    coord delta_origine_grille;
+    delta_origine_grille.x = ((origine.x - GRID_DX) % GRID_X) + GRID_DX;
+    delta_origine_grille.y = ((origine.y - GRID_DY) % GRID_Y) + GRID_DY;
+
+    coord origine_sur_grille;
+    origine_sur_grille.x = origine.x - delta_origine_grille.x;
+    origine_sur_grille.y = origine.y - delta_origine_grille.y;
+
+    if (passagePossible(origine, origine_sur_grille)==0) {
+        origine_sur_grille.x+=GRID_DX;
+        if (passagePossible(origine, origine_sur_grille)==0) {
+            origine_sur_grille.x+=GRID_DX;
+            if (passagePossible(origine, origine_sur_grille)==0) {
+                origine_sur_grille.x-=GRID_DX;
+                if (passagePossible(origine, origine_sur_grille)==0)
+                    origine_sur_grille.x=-1;
+                    origine_sur_grille.y=-1;
 
             }
         }
     }
-    return origine_new;
+    return origine_sur_grille;
 }
 
 

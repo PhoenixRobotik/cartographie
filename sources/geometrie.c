@@ -3,8 +3,8 @@
 
 
 float distance(coord pointA, coord pointB) {
-    int   u=(pointA.x-pointB.x),
-            v=(pointA.y-pointB.y);
+    int u=(pointA.x-pointB.x),
+        v=(pointA.y-pointB.y);
     return (float)sqrtf(u*u+v*v);
 }
 

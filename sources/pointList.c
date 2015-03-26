@@ -32,7 +32,7 @@ Point list_get(PointList *list, int index) {
 }
 int list_find(PointList *list, Point point) {
     int i;
-    for (int i = 0; i < list->size; ++i) {
+    for (i = 0; i < list->size; ++i) {
         if ( equal(point, list->data[i]) )
             return i;
     }

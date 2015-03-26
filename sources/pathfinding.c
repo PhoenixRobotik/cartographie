@@ -1,19 +1,47 @@
+#include "geometrie.h"
+#include "point.h"
+#include "pointList.h"
+#include "obstacles.h"
+#include "bestInFirstOut.h"
+#include "pathfinding.h"
+
+PointList VisitedPoints;
+Point ciblePoint;
+
+void pathfinding_init() {
+    list_init(&VisitedPoints);
+}
 
 
-
-
-PointList astar(Point* start, Point* goal) {
+void pathfinding(coord start, coord cible) {
     // C'est là qu'on va gérer l'ajout d'ennemis.
 
-    set_is_open(start);
+
+    // Tout d'abord on regarde si on peut aller tranquillement de start à cible :
+
+    if (passagePossible(start, cible) == 1) {
+        // OUI !
+        Point newStart = newPoint(start, DEBUT);
+        ciblePoint = newPoint(cible, CIBLE);
+        ciblePoint.parentPointRank = list_append(&VisitedPoints, newStart);
+        return;
+    }
 
 
-    start->gScore = 0;
-    start->fScore = distance_heuristique(*start, *goal);
+
+    // On "recalibre" les points en fonction de la grille.
+    Point newStart = newPoint(pointLePlusProche(start), DEBUT);
+    Point newCible = newPoint(pointLePlusProche(cible), CIBLE);
 
 
-    printf("commence la boucle\n");
-    while(!is_open_empty()) {
+    newStart.gScore = distance(start, newStart.coord);
+    newStart.fScore = distance(start, cible);
+
+    add_to_open(newStart);
+/*
+    //printf("commence la boucle\n");
+
+    while(open_size()!=0) {
         Point* current = pop_best_open_point();
         printf("%d\n", current->neighborCount);
 
@@ -45,28 +73,31 @@ PointList astar(Point* start, Point* goal) {
     printf("pas de chemin trouvé !\n");
     PointList pointList;
     return pointList;
+    */
 }
 
-PointList reconstruct_path(Point* goal) {
-    PointList inverted_path;
-    vector_init(&inverted_path);
+PointList visitedPoints() {
+    return VisitedPoints;
+}
 
-    Point* current = goal;
+PointList reconstruct_path() {
+    PointList cheminInverse, cheminComplet;
 
-    while (current->type != DEBUT) {
-        vector_append(&inverted_path, current);
-        current = current->parent;
+    list_init(&cheminInverse);
+    list_init(&cheminComplet);
+
+    Point current = ciblePoint;
+
+    while (current.type != DEBUT) {
+        list_append(&cheminInverse, current);
+        current = list_get(&VisitedPoints, current.parentPointRank);
     }
-    vector_append(&inverted_path, current);
+    list_append(&cheminInverse, current);
 
-    // Maintenant on retourne la liste ! En plus on sait le nombre de points.
-
-    PointList full_path;
-    vector_init(&full_path);
-
+    // Maintenant, on retourne la liste :)
     int i;
-    for (i = inverted_path.size-1; i >= 0; --i)
-        vector_append(&full_path, vector_get(&inverted_path,i));
+    for (i = cheminInverse.size-1; i >= 0; --i)
+        list_append(&cheminComplet, list_get(&cheminInverse,i));
 
-    return full_path;
+    return cheminComplet;
 }

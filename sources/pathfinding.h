@@ -1,8 +1,11 @@
 #ifndef PATHFINDING_H
 #define PATHFINDING_H
 
-PointList astar(Point* start, Point* goal);
+void pathfinding(coord start, coord cible);
 
-PointList reconstruct_path(Point* goal);
+PointList reconstruct_path();
+
+PointList visitedPoints();
+
 
 #endif // PATHFINDING_H

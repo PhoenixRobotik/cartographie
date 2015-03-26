@@ -16,8 +16,8 @@ Point newVoidPoint(){
 
 Point newPoint(coord position, PointType type){
     Point point = newVoidPoint();
-    point.coord=position;
-    point.type = type;
+    point.coord = position;
+    point.type  = type;
     return point;
 }
 

@@ -25,6 +25,6 @@ void addObstacleNonStatiqueRond(coord centre, int rayon);
 
 int passagePossible(coord a, coord b);
 int conflitPassageObstacle(coord a, coord b, Obstacle obstacle);
-
+coord pointLePlusProche(coord origine);
 
 #endif // OBSTACLES_H

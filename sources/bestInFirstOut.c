@@ -61,12 +61,14 @@ void add_to_open(Point newPoint){
 
 int is_open(Point point) {
     node* current = headOfOpenPoints;
-    while(current != NULL)
+    while(current != NULL) {
          if(equal(point, current->point))
             return 1;
+        current = current->next;
+    }
     return 0;
 }
 
 int open_size() {
-    return (openCount==0);
+    return openCount;
 }

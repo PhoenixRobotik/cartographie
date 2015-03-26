@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "geometrie.h"
 #include "point.h"
 #include "pointList.h"
@@ -40,4 +41,14 @@ void list_extend_if_full(PointList *list) {
 
 void list_free(PointList *list) {
     free(list->data);
+}
+
+void list_printf(PointList *list) {
+    int i;
+    Point current;
+    for (i = 0; i < list->size; ++i) {
+        current = list_get(list, i);
+
+        printf("%d  %d-%d\n", i, current.coord.x, current.coord.y);
+    }
 }

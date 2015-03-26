@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "geometrie.h"
 #include "point.h"
 #include "pointList.h"
@@ -18,7 +20,7 @@ void pathfinding(coord start, coord cible) {
 
 
     // Tout d'abord on regarde si on peut aller tranquillement de start à cible :
-
+/*
     if (passagePossible(start, cible) == 1) {
         // OUI !
         Point newStart = newPoint(start, DEBUT);
@@ -26,54 +28,58 @@ void pathfinding(coord start, coord cible) {
         ciblePoint.parentPointRank = list_append(&VisitedPoints, newStart);
         return;
     }
-
-
+*/
 
     // On "recalibre" les points en fonction de la grille.
-    Point newStart = newPoint(pointLePlusProche(start), DEBUT);
-    Point newCible = newPoint(pointLePlusProche(cible), CIBLE);
-
+    Point startPoint = newPoint(start, DEBUT);
+    Point newStart = newPoint(pointLePlusProche(start), NOEUD);
 
     newStart.gScore = distance(start, newStart.coord);
-    newStart.fScore = distance(start, cible);
-
+    newStart.fScore = distance(newStart.coord, cible);
+    newStart.parentPointRank = list_append(&VisitedPoints, startPoint);
     add_to_open(newStart);
-/*
-    //printf("commence la boucle\n");
+
+    Point realCiblePoint = newPoint(cible, NOEUD);
+    ciblePoint = newPoint(pointLePlusProche(cible), CIBLE);
+
+
+    printf("commence la boucle, %d\n", open_size());
 
     while(open_size()!=0) {
-        Point* current = pop_best_open_point();
-        printf("%d\n", current->neighborCount);
+        printf("whileBoucle\n");
+        Point current = pop_best_open_point();
+        int currentVisitedRank = list_append(&VisitedPoints, current);
+        current.visited = 1;
 
         // On a fini, on reconstruit le chemin grâce au parent de chaque point.
-        if (current->type == CIBLE)
-            return reconstruct_path(goal);
-
-        current->visited = true;
+        if (distance(current.coord, ciblePoint.coord)==0) {
+            ciblePoint.parentPointRank = currentVisitedRank;
+            return;
+        }
 
         int i;
-        for (i = 0; i < current->neighborCount; ++i) {
-            Point* currentNeighbor = current->voisins[i];
-            if (currentNeighbor->visited)
+        for (i = 0; i < 4; ++i) {
+                printf("a\n");
+            Point currentVoisin = getVoisin(current, i);
+            // Si on l'a déjà visité on passe (peut-être on pourrait quand même changer le parent ?)
+            if (list_find(&VisitedPoints, currentVoisin)!=-1)
                 continue;
 
-            int tentative_gScore = current->gScore + distance_directe(*current, *currentNeighbor);
+            int tentative_gScore = current.gScore + distance(current.coord, currentVoisin.coord);
 
-            if(!currentNeighbor->is_open || tentative_gScore < currentNeighbor->gScore) {
-                currentNeighbor->parent = current;
-                currentNeighbor->gScore = tentative_gScore;
-                currentNeighbor->fScore = tentative_gScore + distance_heuristique(*currentNeighbor, *goal);
+                printf("b\n");
+            if(!is_open(currentVoisin) || tentative_gScore < currentVoisin.gScore) {
+                printf("c\n");
+                currentVoisin.parentPointRank = currentVisitedRank;
+                currentVoisin.gScore = tentative_gScore;
+                currentVoisin.fScore = tentative_gScore + distance_heuristique(currentVoisin, ciblePoint);
 
-                if (!currentNeighbor->is_open)
-                    set_is_open(currentNeighbor);
+                if (!is_open(currentVoisin))
+                    add_to_open(currentVoisin);
             }
         }
     }
-
     printf("pas de chemin trouvé !\n");
-    PointList pointList;
-    return pointList;
-    */
 }
 
 PointList visitedPoints() {

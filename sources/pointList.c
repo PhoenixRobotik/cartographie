@@ -30,6 +30,14 @@ Point list_get(PointList *list, int index) {
     }
     return list->data[index];
 }
+int list_find(PointList *list, Point point) {
+    int i;
+    for (int i = 0; i < list->size; ++i) {
+        if ( equal(point, list->data[i]) )
+            return i;
+    }
+    return -1;
+}
 
 void list_extend_if_full(PointList *list) {
     if (list->size >= list->capacity) {

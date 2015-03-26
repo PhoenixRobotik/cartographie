@@ -33,5 +33,8 @@ double distance_heuristique(Point a, Point b);
 int equal(Point a, Point b);
 int is_better(Point a, Point b);
 
+// i doit être entre 0 et 3, donne un voisin direct du point
+Point getVoisin(Point point, int i);
+
 
 #endif // POINT_H

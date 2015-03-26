@@ -31,6 +31,8 @@ int list_append(PointList *list, Point value);
 
 Point list_get(PointList *list, int index);
 
+int list_find(PointList *list, Point point);
+
 void list_printf(PointList *list);
 
 #endif // POINTLIST_H

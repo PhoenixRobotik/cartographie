@@ -6,11 +6,15 @@
 #include "geometrie.h"
 #include "obstacles.h"
 #include "point.h"
+#include "bestInFirstOut.h"
 #include "pointList.h"
 #include "pathfinding.h"
 
 // À initialiser
 
+void auie() {
+
+}
 
 int main() {/*
     coord a,b;
@@ -33,14 +37,34 @@ int main() {/*
 	printf("taille liste %d\n", vectorA.size);
     printf("taille structure Point %lu\n", sizeof(Point));
 */
+    pathfinding_init();
+
+
     coord a;
     coord b;
     a.x = 200;
-    a.y = 100;
-    b.x = 200;
-    b.y = 20000;
+    a.y = 200;
+    b.x = 600;
+    b.y = 600;
+
+    printf("%d, %d\n", b.x, b.y);
+/*
+    Point A = newPoint(pointLePlusProche(a), NOEUD);
+    //add_to_open(A);
+
+    if (is_open(A)) {
+        printf("auieauie\n");
+    }
+    else
+        printf("non\n");
+    {
+    }
+    is_open(A);
+*/
+    
 
     pathfinding(a,b);
+    auie();
     PointList cheminFinal = reconstruct_path();
 
     printf("visited, %d\n", visitedPoints().size);

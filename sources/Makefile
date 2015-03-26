@@ -3,9 +3,10 @@ CFLAGS=-W -Wall
 
 LDFLAGS=-lm
 SDLFLAGS=-lSDL -lSDL_image -lGL -lGLU -lSOIL
+GDBFLAGS=-g
 EXEC=carto_robot
 
-SOURCES=main.c geometrie.c obstacles.c point.c pointList.c bestInFirstOut.c # pathfinding.c
+SOURCES=main.c geometrie.c obstacles.c point.c pointList.c bestInFirstOut.c pathfinding.c
 HEADERS=$(SOURCES:.c=.h)
 OBJECTS=$(SOURCES:.c=.o)
 
@@ -19,10 +20,10 @@ view: all
 all: $(EXEC)
 
 $(EXEC): $(OBJECTS)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS) $(GDBFLAGS)
 
 %.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< $(CFLAGS) $(GDBFLAGS)
 
 tarall: $(SOURCEFILES)
 	tar -jcvf $(EXEC).tar.bz2 $^

@@ -27,9 +27,6 @@ typedef struct  {
 Point newVoidPoint();
 Point newPoint(coord position, PointType type);
 
-
-double distance_heuristique(Point a, Point b);
-
 int equal(Point a, Point b);
 int is_better(Point a, Point b);
 

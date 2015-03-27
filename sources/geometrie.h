@@ -19,6 +19,7 @@ typedef struct {
 } coord;
 
 float distance(coord pointA, coord pointB);
+float distance_heuristique(coord a, coord b);
 
 float distancePointSegment(coord segment1, coord segment2, coord point);
 int SegmentsIntersectent(coord segment1a, coord segment1b, coord segment2a, coord segment2b);

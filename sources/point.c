@@ -21,11 +21,6 @@ Point newPoint(coord position, PointType type){
     return point;
 }
 
-double distance_heuristique(Point a, Point b) {
-	// TODO ajouter un coeff si nécessaire
-    return distance(a.coord, b.coord);
-}
-
 int equal(Point a, Point b) {
     return (   a.coord.x == b.coord.x
             && a.coord.y == b.coord.y );

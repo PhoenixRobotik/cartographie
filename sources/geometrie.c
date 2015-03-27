@@ -8,6 +8,11 @@ float distance(coord pointA, coord pointB) {
     return (float)sqrtf((float)u*u+v*v);
 }
 
+float distance_heuristique(coord a, coord b) {
+    // TODO ajouter un coeff si nécessaire
+    return 1.414*distance(a, b);
+}
+
 float distancePointSegment(coord segment1, coord segment2, coord point){
 
     return 0;

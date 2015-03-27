@@ -27,27 +27,30 @@ void pathfinding(coord start, coord cible) {
 /*
     if (passagePossible(start, cible) == 1) {
         // OUI !
-        Point newStart = newPoint(start, DEBUT);
+        Point startPoint = newPoint(start, DEBUT);
         ciblePoint = newPoint(cible, CIBLE);
-        ciblePoint.parentPointRank = list_append(&VisitedPoints, newStart);
+        ciblePoint.parentPointRank = list_append(&VisitedPoints, startPoint);
         return;
     }
 */
 
     // On "recalibre" les points en fonction de la grille.
-    Point startPoint = newPoint(start, DEBUT);
-    Point newStart = newPoint(pointLePlusProche(start), NOEUD);
+    Point realStartPoint= newPoint(start, DEBUT);
+    Point startPoint    = newPoint(pointLePlusProche(start), NOEUD);
+    Point ciblePoint    = newPoint(pointLePlusProche(cible), CIBLE);
+          realCiblePoint= newPoint(cible, NOEUD);
 
-    newStart.gScore = distance(start, newStart.coord);
-    newStart.fScore = distance(newStart.coord, cible);
-    newStart.parentPointRank = list_append(&VisitedPoints, startPoint);
-    add_to_open(newStart);
+    realStartPoint.gScore = 0;
+    realStartPoint.fScore = distance_heuristique(realStartPoint.coord, realCiblePoint.coord);
 
-    realCiblePoint = newPoint(cible, NOEUD);
-    Point ciblePoint = newPoint(pointLePlusProche(cible), CIBLE);
+    startPoint.parentPointRank = list_append(&VisitedPoints, realStartPoint);
+
+    startPoint.gScore = distance(start, startPoint.coord);
+    startPoint.fScore = startPoint.gScore + distance_heuristique(startPoint.coord, realCiblePoint.coord);
 
 
-    printf("commence la boucle, %d\n", open_size());
+    add_to_open(startPoint);
+
 
     while(open_size()!=0) {
         //printf("whileBoucle\n");
@@ -58,6 +61,8 @@ void pathfinding(coord start, coord cible) {
         if (equal(visiting, ciblePoint)) {
             // On a fini, on reconstruit le chemin grâce au parent de chaque point.
             realCiblePoint.parentPointRank = visitingRank;
+            realCiblePoint.gScore = visiting.gScore + distance(visiting.coord, realCiblePoint.coord);
+            realCiblePoint.fScore = realCiblePoint.gScore;
             return;
         }
 
@@ -70,7 +75,7 @@ void pathfinding(coord start, coord cible) {
                 continue;
 
             float tentative_gScore = visiting.gScore + distance(visiting.coord, voisin.coord);
-            printf("tentative_gScore %f\n", tentative_gScore);
+            //printf("tentative_gScore %f\n", tentative_gScore);
             breakp();
 
             Point* voisinOpenPointer = find_in_open(voisin);
@@ -82,10 +87,11 @@ void pathfinding(coord start, coord cible) {
             }
 
             if(!voisin_is_open || tentative_gScore < voisinOpenPointer->gScore) {
-                printf("c\n");
+                //printf("c\n");
                 voisinOpenPointer->parentPointRank = visitingRank;
                 voisinOpenPointer->gScore = tentative_gScore;
-                voisinOpenPointer->fScore = tentative_gScore + distance_heuristique(*voisinOpenPointer, realCiblePoint);
+                voisinOpenPointer->fScore = tentative_gScore 
+                        + distance_heuristique((*voisinOpenPointer).coord, realCiblePoint.coord);
 
                 if (!voisin_is_open)
                     add_to_open(voisin);

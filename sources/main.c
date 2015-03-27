@@ -47,7 +47,6 @@ int main() {/*
     b.x = 600;
     b.y = 601;
 
-    printf("%d, %d\n", b.x, b.y);
 /*
     Point A = newPoint(pointLePlusProche(a), NOEUD);
     //add_to_open(A);
@@ -70,7 +69,7 @@ int main() {/*
     printf("visited, %d\n", visitedPoints().size);
     printf("final, %d\n", cheminFinal.size);
 
-    PointList visitedPointsV = visitedPoints(); 
+    //PointList visitedPointsV = visitedPoints(); 
     list_printf(&cheminFinal);
 
     return 0;

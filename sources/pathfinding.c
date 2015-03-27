@@ -8,7 +8,7 @@
 #include "pathfinding.h"
 
 PointList VisitedPoints;
-Point ciblePoint;
+Point realCiblePoint;
 
 void pathfinding_init() {
     list_init(&VisitedPoints);
@@ -39,42 +39,42 @@ void pathfinding(coord start, coord cible) {
     newStart.parentPointRank = list_append(&VisitedPoints, startPoint);
     add_to_open(newStart);
 
-    Point realCiblePoint = newPoint(cible, NOEUD);
-    ciblePoint = newPoint(pointLePlusProche(cible), CIBLE);
+    realCiblePoint = newPoint(cible, NOEUD);
+    Point ciblePoint = newPoint(pointLePlusProche(cible), CIBLE);
 
 
     printf("commence la boucle, %d\n", open_size());
 
     while(open_size()!=0) {
-        printf("whileBoucle\n");
+        //printf("whileBoucle\n");
         Point current = pop_best_open_point();
-        int currentVisitedRank = list_append(&VisitedPoints, current);
         current.visited = 1;
+        int currentVisitedRank = list_append(&VisitedPoints, current);
 
         // On a fini, on reconstruit le chemin grâce au parent de chaque point.
         if (distance(current.coord, ciblePoint.coord)==0) {
-            ciblePoint.parentPointRank = currentVisitedRank;
+            realCiblePoint.parentPointRank = currentVisitedRank;
             return;
         }
 
         int i;
         for (i = 0; i < 4; ++i) {
-                printf("a\n");
             Point currentVoisin = getVoisin(current, i);
             // Si on l'a déjà visité on passe (peut-être on pourrait quand même changer le parent ?)
             if (list_find(&VisitedPoints, currentVoisin)!=-1)
                 continue;
 
-            int tentative_gScore = current.gScore + distance(current.coord, currentVoisin.coord);
+            float tentative_gScore = current.gScore + distance(current.coord, currentVoisin.coord);
+            //printf("tentative_gScore %f\n", tentative_gScore);
 
-                printf("b\n");
-            if(!is_open(currentVoisin) || tentative_gScore < currentVoisin.gScore) {
-                printf("c\n");
+            Point* is_open = find_in_open(currentVoisin);
+            if(is_open == NULL || tentative_gScore < is_open->gScore) {
+                //printf("c\n");
                 currentVoisin.parentPointRank = currentVisitedRank;
                 currentVoisin.gScore = tentative_gScore;
                 currentVoisin.fScore = tentative_gScore + distance_heuristique(currentVoisin, ciblePoint);
 
-                if (!is_open(currentVoisin))
+                if (is_open == NULL)
                     add_to_open(currentVoisin);
             }
         }
@@ -92,7 +92,7 @@ PointList reconstruct_path() {
     list_init(&cheminInverse);
     list_init(&cheminComplet);
 
-    Point current = ciblePoint;
+    Point current = realCiblePoint;
 
     while (current.type != DEBUT) {
         list_append(&cheminInverse, current);

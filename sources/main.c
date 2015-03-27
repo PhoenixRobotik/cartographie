@@ -42,10 +42,10 @@ int main() {/*
 
     coord a;
     coord b;
-    a.x = 200;
-    a.y = 200;
-    b.x = 600;
-    b.y = 600;
+    a.x = 257;
+    a.y = 230;
+    b.x = 0;
+    b.y = 1;
 
     printf("%d, %d\n", b.x, b.y);
 /*

@@ -91,27 +91,29 @@ void addObstacleNonStatiqueRond(coord centre, int rayon) {
     ObstaclesNonStatiques[nombreObstaclesNonStatiques++]=obstacle;
 }
 
-
-
-
 int passagePossible(coord a, coord b) {
+    printf("passage possible ?\n");
     int i;
     for (i = 0; i < NOMBRE_OBSTACLES_STATIQUES; ++i)
-        if (conflitPassageObstacle(a, b, ObstaclesStatiques[i]))
+        if (conflitPassageObstacle(a, b, ObstaclesStatiques[i])) {
+            printf("erreur avec l'obstacle %d\n", i);
             return 0;
-    for (i = 0; i < nombreObstaclesNonStatiques; ++i)
+        }
+    /*for (i = 0; i < nombreObstaclesNonStatiques; ++i)
         if (conflitPassageObstacle(a, b, ObstaclesNonStatiques[i]))
             return 0;
+    */
+    printf("passage possible\n");
     return 1;
 }
 
 int conflitPassageObstacle(coord a, coord b, Obstacle obstacle) {
     switch (obstacle.type) {
         case 0:     // Segment
-            return SegmentsIntersectent(a, b, obstacle.point1, obstacle.point2);
+            return collisionSegmentSegment(a, b, obstacle.point1, obstacle.point2);
             break;
         case 1:     // Cercle
-            return (distancePointSegment(a, b, obstacle.point1) <= ROBOT_R + obstacle.rayon);
+            return 0;//(distancePointSegment(a, b, obstacle.point1) <= ROBOT_R + obstacle.rayon);
             break;
         default:
             return 1;

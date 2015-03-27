@@ -6,7 +6,7 @@ SDLFLAGS=-lSDL -lSDL_image -lGL -lGLU -lSOIL
 GDBFLAGS=-g
 EXEC=carto_robot
 
-SOURCES=main.c geometrie.c obstacles.c point.c pointList.c bestInFirstOut.c pathfinding.c
+SOURCES=main.c geometrie.c obstacles.c point.c pointList.c bestInFirstOut.c pathfinding.c debug/affichage.c
 HEADERS=$(SOURCES:.c=.h)
 OBJECTS=$(SOURCES:.c=.o)
 
@@ -20,7 +20,7 @@ view: all
 all: $(EXEC)
 
 $(EXEC): $(OBJECTS)
-	$(CC) -o $@ $^ $(LDFLAGS) $(GDBFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS) $(SDLFLAGS) $(GDBFLAGS)
 
 %.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS) $(GDBFLAGS)

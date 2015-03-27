@@ -18,5 +18,6 @@ On définit une grille pour "découper" la table. En fait on renseigne uniquemen
 la taille de la grille et le décallage à l'origine.
 
 
-
+### L'algorithme
+C'est du A*, donc fonctionnement classique.
 

@@ -44,8 +44,8 @@ int main() {/*
     coord b;
     a.x = 257;
     a.y = 230;
-    b.x = 0;
-    b.y = 1;
+    b.x = 600;
+    b.y = 601;
 
     printf("%d, %d\n", b.x, b.y);
 /*

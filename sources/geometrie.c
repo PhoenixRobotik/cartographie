@@ -5,7 +5,7 @@
 float distance(coord pointA, coord pointB) {
     int u=(pointA.x-pointB.x),
         v=(pointA.y-pointB.y);
-    return (float)sqrtf(u*u+v*v);
+    return (float)sqrtf((float)u*u+v*v);
 }
 
 float distancePointSegment(coord segment1, coord segment2, coord point){

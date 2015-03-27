@@ -57,7 +57,15 @@ void add_to_open(Point newPoint){
     }
     openCount++;
 }
-
+Point* find_in_open(Point point) {
+    node* current = headOfOpenPoints;
+    while(current != NULL) {
+         if(equal(point, current->point))
+            return &(current->point);
+        current = current->next;
+    }
+    return NULL;
+}
 
 int is_open(Point point) {
     node* current = headOfOpenPoints;

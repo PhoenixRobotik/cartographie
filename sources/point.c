@@ -5,7 +5,7 @@ Point newVoidPoint(){
     Point point;
     point.type = NOEUD;
 
-    point.gScore = ENORMOUS_COST;
+    point.gScore = 0;
     point.fScore = 0;
 
     point.visited = 0;
@@ -23,7 +23,7 @@ Point newPoint(coord position, PointType type){
 
 double distance_heuristique(Point a, Point b) {
 	// TODO ajouter un coeff si nécessaire
-    return 1.2*distance(a.coord, b.coord);
+    return distance(a.coord, b.coord);
 }
 
 int equal(Point a, Point b) {

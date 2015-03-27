@@ -2,6 +2,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <SOIL/SOIL.h>
+#include <math.h>
 #include "affichage.h"
 
 #define AFFICHAGE_DEBUG 0
@@ -26,8 +27,56 @@ void dessine_fond() {
     glEnd();
     SDL_GL_SwapBuffers(); // Mise à jour de l'écran
 }
+void add_trait(int x1, int y1,int x2, int y2) {
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity( );
 
-void dessine_passage(int type) {
+    glColor3ub(255,0,0);
+
+    glDisable(GL_TEXTURE_2D);
+    glBegin(GL_LINES);
+        glVertex2d(x1, y1);
+        glVertex2d(x2, y2);
+    glEnd();
+
+    glFlush();
+    SDL_GL_SwapBuffers(); // Mise à jour de l'écran
+
+}
+void add_circle(float cx, float cy, float r, int num_segments) 
+{ 
+    num_segments = 100;
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity( );
+    float theta = 2 * 3.1415926 / (float)(num_segments); 
+    float c = cosf(theta);//precalculate the sine and cosine
+    float s = sinf(theta);
+    float t;
+
+    float x = r;//we start at angle = 0 
+    float y = 0; 
+    
+    glBegin(GL_LINE_LOOP); 
+    int ii;
+    for( ii = 0; ii < num_segments; ii++) 
+    { 
+        glVertex2f(x + cx, y + cy);//output vertex 
+        
+        //apply the rotation matrix
+        t = x;
+        x = c * x - s * y;
+        y = s * t + c * y;
+    } 
+    glEnd(); 
+
+    glFlush();
+    SDL_GL_SwapBuffers(); // Mise à jour de l'écran
+}
+void add_passage_point(int x, int y, int type) {
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity( );
+    glTranslated(x, y, 0);
+
     if (type == 2)
         glColor3ub(255,0,0);
     else if (type == 3)
@@ -43,13 +92,6 @@ void dessine_passage(int type) {
         glVertex2d(+POINT_SIZE/2, +POINT_SIZE/2);
         glVertex2d(+POINT_SIZE/2, -POINT_SIZE/2);
     glEnd();
-}
-void add_passage_point(int x, int y, int type) {
-
-    glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity( );
-    glTranslated(x, y, 0);
-    dessine_passage(type);
 
     glFlush();
     SDL_GL_SwapBuffers(); // Mise à jour de l'écran
@@ -86,7 +128,7 @@ int init_sdl_screen() {
     gluOrtho2D(0,WIDTH,0,HEIGHT);
 
     // Texture : plateau de jeu
-    texturePlateau = SOIL_load_OGL_texture("../plateau.png",
+    texturePlateau = SOIL_load_OGL_texture("debug/plateau.png",
         SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
     if (AFFICHAGE_DEBUG == 1 || texturePlateau == 0)
         printf("SOIL messages : '%s' (plateau.png)\n", SOIL_last_result());

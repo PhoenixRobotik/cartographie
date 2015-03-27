@@ -31,14 +31,43 @@ int collisionSegmentSegment(coord A, coord B, coord I, coord P){
     return 1;
 }
 
-int distanceCercleSegment() {
-    return 10000;
+int collisionDroiteCercle(coord A, coord B, coord C, float rayon) {
+    coord u;
+    u.x = B.x - A.x;
+    u.y = B.y - A.y;
+    coord AC;
+    AC.x = C.x - A.x;
+    AC.y = C.y - A.y;
+    float numerateur = u.x*AC.y - u.y*AC.x;   // norme du vecteur v
+    if (numerateur <0)
+        numerateur = -numerateur ;   // valeur absolue ; si c'est négatif, on prend l'opposé.
+    float denominateur = sqrt(u.x*u.x + u.y*u.y);  // norme de u
+    float CI = numerateur / denominateur;
+    
+    return CI<rayon;
 }
+int collisionPointCercle(coord A, coord C, float rayon) {
+    return distance(A, C) <= rayon;
+}
+int collisionSegmentCercle(coord A, coord B, coord C, float rayon){
+    if (!collisionDroiteCercle(A, B, C, rayon))
+        return 0;  // si on ne touche pas la droite, on ne touchera jamais le segment
+    coord AB, AC, BC;
+    AB.x = B.x - A.x;
+    AB.y = B.y - A.y;
+    AC.x = C.x - A.x;
+    AC.y = C.y - A.y;
+    BC.x = C.x - B.x;
+    BC.y = C.y - B.y;
 
-
-
-float distancePointSegment(coord segment1, coord segment2, coord point){
-
+    float pscal1 = AB.x*AC.x + AB.y*AC.y;  // produit scalaire
+    float pscal2 = (-AB.x)*BC.x + (-AB.y)*BC.y;  // produit scalaire
+    if (pscal1>=0 && pscal2>=0)
+        return 1;   // I entre A et B, ok.
+    // dernière possibilité, A ou B dans le cercle
+    if (collisionPointCercle(A, C, rayon))
+        return 1;
+    if (collisionPointCercle(B, C, rayon))
+        return 1;
     return 0;
-
 }

@@ -23,7 +23,6 @@ float distance_heuristique(coord a, coord b);
 
 int collisionSegmentSegment(coord A, coord B, coord I, coord P);
 
-float distancePointSegment(coord segment1, coord segment2, coord point);
-
+int collisionSegmentCercle(coord A, coord B, coord C, float rayon);
 
 #endif // GEOMETRIE_H

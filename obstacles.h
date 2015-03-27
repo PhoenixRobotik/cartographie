@@ -13,8 +13,10 @@ typedef _Obstacle Obstacle;
 // Gestion des obstacles
 void addAllObstaclesStatiques();
 void addObstacleStatique(const int valeurs[], int i);
+Obstacle getObstacleStatique(int i);
 
 #define NOMBRE_OBSTACLES_STATIQUES 34
+//34
 
 // Gestion des obstacles non statiques (plots, etc, gérés par la stratégie)
 void addObstacleNonStatiqueRond(coord centre, int rayon);

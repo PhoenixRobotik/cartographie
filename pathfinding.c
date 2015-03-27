@@ -16,6 +16,16 @@ void pathfinding_init() {
     addAllObstaclesStatiques();
     init_sdl_screen();
     dessine_fond();
+    int i;
+    for (i = 0; i < NOMBRE_OBSTACLES_STATIQUES; ++i) {
+        Obstacle obstacle = getObstacleStatique(i);
+        if (obstacle.type == 0)
+            add_trait(obstacle.point1.x, obstacle.point1.y, obstacle.point2.x, obstacle.point2.y);
+        else {
+            printf("%d, %d\n", obstacle.point1.x, obstacle.point1.y);
+            add_circle(obstacle.point1.x, obstacle.point1.y, obstacle.rayon + ROBOT_R, 20);
+        }
+    }
 }
 
 
@@ -70,6 +80,9 @@ void pathfinding(coord start, coord cible) {
 
         int voisinId;
         for (voisinId = 0; voisinId < 4; ++voisinId) {
+            int i=0;
+            while(++i<2000000);
+            //printf("go\n");
             Point voisin = getVoisin(visiting, voisinId);
             if (!passagePossible(visiting.coord, voisin.coord))
                 continue;

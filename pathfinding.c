@@ -80,8 +80,8 @@ void pathfinding(coord start, coord cible) {
 
         int voisinId;
         for (voisinId = 0; voisinId < 4; ++voisinId) {
-            int i=0;
-            while(++i<2000000);
+          //  int i=0;
+          //  while(++i<2000000);
             //printf("go\n");
             Point voisin = getVoisin(visiting, voisinId);
             if (!passagePossible(visiting.coord, voisin.coord))

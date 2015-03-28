@@ -10,7 +10,7 @@ float distance(coord pointA, coord pointB) {
 
 float distance_heuristique(coord a, coord b) {
     // TODO ajouter un coeff si nécessaire
-    return 1.414*distance(a, b);
+    return 10*distance(a, b);
 }
 
 int collisionSegmentSegment(coord A, coord B, coord I, coord P){
@@ -43,7 +43,7 @@ int collisionDroiteCercle(coord A, coord B, coord C, float rayon) {
         numerateur = -numerateur ;   // valeur absolue ; si c'est négatif, on prend l'opposé.
     float denominateur = sqrt(u.x*u.x + u.y*u.y);  // norme de u
     float CI = numerateur / denominateur;
-    
+
     return CI<rayon;
 }
 int collisionPointCercle(coord A, coord C, float rayon) {

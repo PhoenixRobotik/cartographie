@@ -22,7 +22,6 @@ void pathfinding_init() {
         if (obstacle.type == 0)
             add_trait(obstacle.point1.x, obstacle.point1.y, obstacle.point2.x, obstacle.point2.y);
         else {
-            printf("%d, %d\n", obstacle.point1.x, obstacle.point1.y);
             add_circle(obstacle.point1.x, obstacle.point1.y, obstacle.rayon + ROBOT_R, 20);
         }
     }
@@ -80,8 +79,8 @@ void pathfinding(coord start, coord cible) {
 
         int voisinId;
         for (voisinId = 0; voisinId < 4; ++voisinId) {
-          //  int i=0;
-          //  while(++i<2000000);
+           // int i=0;
+           // while(++i<10000000);
             //printf("go\n");
             Point voisin = getVoisin(visiting, voisinId);
             if (!passagePossible(visiting.coord, voisin.coord))
@@ -106,7 +105,7 @@ void pathfinding(coord start, coord cible) {
                 //printf("c\n");
                 voisinOpenPointer->parentPointRank = visitingRank;
                 voisinOpenPointer->gScore = tentative_gScore;
-                voisinOpenPointer->fScore = tentative_gScore 
+                voisinOpenPointer->fScore = tentative_gScore
                         + distance_heuristique((*voisinOpenPointer).coord, realCiblePoint.coord);
 
                 if (!voisin_is_open)
@@ -131,6 +130,7 @@ PointList reconstruct_path() {
 
     while (current.type != DEBUT) {
         list_append(&cheminInverse, current);
+        add_passage_point(current.coord.x, current.coord.y, 2);
         current = list_get(&VisitedPoints, current.parentPointRank);
     }
     list_append(&cheminInverse, current);

@@ -49,7 +49,7 @@ void add_to_open(Point newPoint){
         node* current = headOfOpenPoints;
 
         while(current->next != NULL &&  // Le dernier point pointe sur zéro
-              is_better(newPoint, current->next->point) )
+              !is_better(newPoint, current->next->point) )
             current = current->next;
 
         newNode->next = current->next;

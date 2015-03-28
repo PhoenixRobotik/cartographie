@@ -45,8 +45,8 @@ void pathfinding(coord start, coord cible) {
     startPoint.gScore = distance(start, startPoint.coord);
     startPoint.fScore = startPoint.gScore + distance_heuristique(startPoint.coord, realCiblePoint.coord);
 
-    add_passage_point(start.x,start.y,2);
-    add_passage_point(cible.x,cible.y,3);
+   // add_passage_point(start.x,start.y,2);
+   // add_passage_point(cible.x,cible.y,3);
 
         printf("on peut aller directement ?\n");
     // Tout d'abord on regarde si on peut aller tranquillement de start à cible :
@@ -67,7 +67,7 @@ void pathfinding(coord start, coord cible) {
         visiting.visited = 1;
         int visitingRank = list_append(&VisitedPoints, visiting);
 
-        add_passage_point(visiting.coord.x,visiting.coord.y,0);
+        //add_passage_point(visiting.coord.x,visiting.coord.y,0);
 
         if (equal(visiting, ciblePoint)) {
             // On a fini, on reconstruit le chemin grâce au parent de chaque point.
@@ -120,6 +120,20 @@ PointList visitedPoints() {
     return VisitedPoints;
 }
 
+Point get_precedent_theta_start(Point current) {
+    Point precedent, subprecedent;
+    precedent = list_get(&VisitedPoints, current.parentPointRank);
+    if (precedent.type == DEBUT)
+        return precedent;
+    subprecedent = list_get(&VisitedPoints, precedent.parentPointRank);
+    if (passagePossible(current.coord, subprecedent.coord)) {
+        current.parentPointRank = precedent.parentPointRank;
+        return get_precedent_theta_start(current);
+    }
+
+    return precedent;
+}
+
 PointList reconstruct_path() {
     PointList cheminInverse, cheminComplet;
 
@@ -131,8 +145,10 @@ PointList reconstruct_path() {
     while (current.type != DEBUT) {
         list_append(&cheminInverse, current);
         add_passage_point(current.coord.x, current.coord.y, 2);
-        current = list_get(&VisitedPoints, current.parentPointRank);
+        current = get_precedent_theta_start(current);
+        //current = list_get(&VisitedPoints, current.parentPointRank);
     }
+    add_passage_point(current.coord.x, current.coord.y, 2);
     list_append(&cheminInverse, current);
 
     // Maintenant, on retourne la liste :)

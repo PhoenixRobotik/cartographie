@@ -24,15 +24,15 @@ int main() {
     b.x = 3000-300;
     b.y = 2000-300;
 
-    pathfinding(a,b);
+ /*   pathfinding(a,b);
     PointList cheminFinal = reconstruct_path();
 
     printf("visited, %d\n", visitedPoints().size);
     printf("final, %d\n", cheminFinal.size);
 
-    //PointList visitedPointsV = visitedPoints(); 
+    //PointList visitedPointsV = visitedPoints();
     list_printf(&cheminFinal);
-
+*/
     while(!sdl_manage_events());
 
     return 0;

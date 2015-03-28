@@ -1,6 +1,8 @@
 #ifndef POINT_H
 #define POINT_H
 
+#include "geometrie.h"
+
 #define ENORMOUS_COST 99999
 // Juste une facilité pour identifier le noeud de début et de cible.
 typedef enum {

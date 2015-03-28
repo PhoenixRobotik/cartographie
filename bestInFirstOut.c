@@ -1,19 +1,14 @@
 // BIFO : Best In First Out
 
-/*
-    On va créer une re de liste dans laquelle on peut rajouter
-    des points, et "pop" va donner le point qui a le meilleur score.
+//  On va créer une re de liste dans laquelle on peut rajouter
+//  des points, et "pop" va donner le point qui a le meilleur score.
 
-*/
-#include <stdio.h>
 #include <stdlib.h>
-#include "geometrie.h"
 #include "point.h"
 #include "bestInFirstOut.h"
 
 int openCount = 0;
 node* headOfOpenPoints = NULL;
-
 
 Point pop_best_open_point(){
     Point bestOpenPoint;
@@ -57,6 +52,7 @@ void add_to_open(Point newPoint){
     }
     openCount++;
 }
+
 Point* find_in_open(Point point) {
     node* current = headOfOpenPoints;
     while(current != NULL) {
@@ -65,16 +61,6 @@ Point* find_in_open(Point point) {
         current = current->next;
     }
     return NULL;
-}
-
-int is_open(Point point) {
-    node* current = headOfOpenPoints;
-    while(current != NULL) {
-         if(equal(point, current->point))
-            return 1;
-        current = current->next;
-    }
-    return 0;
 }
 
 int open_size() {

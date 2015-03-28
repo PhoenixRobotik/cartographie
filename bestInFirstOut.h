@@ -16,8 +16,7 @@ Point pop_best_open_point();
 // Ajoute un point dans la liste
 void add_to_open(Point);
 
-// Cherche dans la liste si le point est ouvert (regarde les coordonnées)
-int is_open(Point);
+// Trouve un point correspondant ou renvoie NULL
 Point* find_in_open(Point point);
 
 // Indique la taille de la liste (si 0, la liste est vide)

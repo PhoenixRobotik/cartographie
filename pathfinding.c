@@ -1,6 +1,8 @@
-#include <stdio.h>
 
-#include "debug/affichage.h"
+#if DEBUG
+#include <stdio.h>
+#endif
+#include <stdlib.h>
 #include "geometrie.h"
 #include "point.h"
 #include "pointList.h"
@@ -8,12 +10,17 @@
 #include "bestInFirstOut.h"
 #include "pathfinding.h"
 
+#if USE_SDL
+#include "debug/affichage.h"
+#endif
+
 PointList VisitedPoints;
 Point realCiblePoint;
 
 void pathfinding_init() {
     list_init(&VisitedPoints);
     addAllObstaclesStatiques();
+#if USE_SDL
     init_sdl_screen();
     dessine_fond();
     int i;
@@ -25,6 +32,7 @@ void pathfinding_init() {
             add_circle(obstacle.point1.x, obstacle.point1.y, obstacle.rayon + ROBOT_R, 20);
         }
     }
+#endif
 }
 
 
@@ -45,18 +53,26 @@ void pathfinding(coord start, coord cible) {
     startPoint.gScore = distance(start, startPoint.coord);
     startPoint.fScore = startPoint.gScore + distance_heuristique(startPoint.coord, realCiblePoint.coord);
 
+#if USE_SDL
     add_passage_point(start.x,start.y,1);
     add_passage_point(cible.x,cible.y,1);
+#endif
 
+#if DEBUG
     printf("on peut aller directement ?\n");
+#endif
     // Tout d'abord on regarde si on peut aller tranquillement de start à cible :
     if (passagePossible(start, cible)) {
+#if DEBUG
         printf("on peut aller directement\n");
+#endif
         // OUI !
         realCiblePoint.parentPointRank = startPoint.parentPointRank;
         return;
     }
+#if DEBUG
     printf("on ne peut pas aller directement\n");
+#endif
 
     add_to_open(startPoint);
 
@@ -66,8 +82,9 @@ void pathfinding(coord start, coord cible) {
         Point visiting = pop_best_open_point();
         visiting.visited = 1;
         int visitingRank = list_append(&VisitedPoints, visiting);
-
+#if USE_SDL
         add_passage_point(visiting.coord.x,visiting.coord.y,0);
+#endif
 
         if (equal(visiting, ciblePoint)) {
             // On a fini, on reconstruit le chemin grâce au parent de chaque point.
@@ -113,7 +130,9 @@ void pathfinding(coord start, coord cible) {
             }
         }
     }
+#if DEBUG
     printf("pas de chemin trouvé !\n");
+#endif
 }
 
 PointList visitedPoints() {
@@ -141,17 +160,23 @@ PointList reconstruct_path() {
     list_init(&cheminComplet);
 
     Point current = realCiblePoint;
+#if USE_SDL
     coord old = current.coord;
+#endif
 
     while (current.type != DEBUT) {
         list_append(&cheminInverse, current);
+#if USE_SDL
         add_trait(old.x, old.y, current.coord.x, current.coord.y);
         add_passage_point(current.coord.x, current.coord.y, 2);
         old = current.coord;
+#endif
         current = get_precedent_theta_start(current);
     }
+#if USE_SDL
     add_trait(old.x, old.y, current.coord.x, current.coord.y);
     add_passage_point(current.coord.x, current.coord.y, 2);
+#endif
     list_append(&cheminInverse, current);
 
     // Maintenant, on retourne la liste :)

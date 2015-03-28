@@ -8,9 +8,9 @@ float distance(coord pointA, coord pointB) {
     return (float)sqrtf((float)u*u+v*v);
 }
 
-float distance_heuristique(coord a, coord b) {
-    // TODO ajouter un coeff si nécessaire
-    return 10*distance(a, b);
+float distance_heuristique(coord A, coord B) {
+    // Ajouter un coeff si nécessaire
+    return 10*distance(A, B);
 }
 
 int collisionSegmentSegment(coord A, coord B, coord I, coord P){
@@ -19,7 +19,7 @@ int collisionSegmentSegment(coord A, coord B, coord I, coord P){
     D.y = B.y - A.y;
     E.x = P.x - I.x;
     E.y = P.y - I.y;
-    double denom = D.x*E.y - D.y*E.x;
+    float denom = D.x*E.y - D.y*E.x;
     if (denom==0)
         return 0;   // Segment et droite parallèles
     float t = - (A.x*E.y-I.x*E.y-E.x*A.y+E.x*I.y) / denom;

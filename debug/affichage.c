@@ -5,8 +5,6 @@
 #include <math.h>
 #include "affichage.h"
 
-#define AFFICHAGE_DEBUG 0
-
 SDL_Event evenements;
 GLuint texturePlateau;
 
@@ -137,8 +135,9 @@ int init_sdl_screen() {
     // Texture : plateau de jeu
     texturePlateau = SOIL_load_OGL_texture("debug/plateau.png",
         SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-    if (AFFICHAGE_DEBUG == 1 || texturePlateau == 0)
-        printf("SOIL messages : '%s' (plateau.png)\n", SOIL_last_result());
+#if DEBUG
+    printf("SOIL messages : '%s' (plateau.png)\n", SOIL_last_result());
+#endif
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, texturePlateau);

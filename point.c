@@ -1,4 +1,3 @@
-#include "geometrie.h"
 #include "point.h"
 
 Point newVoidPoint(){

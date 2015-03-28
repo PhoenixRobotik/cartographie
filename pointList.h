@@ -21,18 +21,20 @@ typedef struct {
 } PointList;
 
 //      Init, free and "make bigger if full"
-void list_init(PointList *list);
-void list_free(PointList *list);
-void list_extend_if_full(PointList *list);
+void 	list_init	(PointList *list);
+void 	list_free	(PointList *list);
+void 	list_extend_if_full(PointList *list);
 
 //      Getters and setters
 // Retourne l'index du nouvel élément
-int list_append(PointList *list, Point value);
+int 	list_append	(PointList *list, Point value);
 
-Point list_get(PointList *list, int index);
+Point 	list_get	(PointList *list, int index);
+int 	list_find	(PointList *list, Point point);
 
-int list_find(PointList *list, Point point);
-
-void list_printf(PointList *list);
+#if DEBUG
+// Pour le debug
+void 	list_printf	(PointList *list);
+#endif
 
 #endif // POINTLIST_H

@@ -45,10 +45,10 @@ void pathfinding(coord start, coord cible) {
     startPoint.gScore = distance(start, startPoint.coord);
     startPoint.fScore = startPoint.gScore + distance_heuristique(startPoint.coord, realCiblePoint.coord);
 
-   // add_passage_point(start.x,start.y,2);
-   // add_passage_point(cible.x,cible.y,3);
+    add_passage_point(start.x,start.y,1);
+    add_passage_point(cible.x,cible.y,1);
 
-        printf("on peut aller directement ?\n");
+    printf("on peut aller directement ?\n");
     // Tout d'abord on regarde si on peut aller tranquillement de start à cible :
     if (passagePossible(start, cible)) {
         printf("on peut aller directement\n");
@@ -56,7 +56,7 @@ void pathfinding(coord start, coord cible) {
         realCiblePoint.parentPointRank = startPoint.parentPointRank;
         return;
     }
-        printf("on ne peut pas aller directement\n");
+    printf("on ne peut pas aller directement\n");
 
     add_to_open(startPoint);
 
@@ -67,7 +67,7 @@ void pathfinding(coord start, coord cible) {
         visiting.visited = 1;
         int visitingRank = list_append(&VisitedPoints, visiting);
 
-        //add_passage_point(visiting.coord.x,visiting.coord.y,0);
+        add_passage_point(visiting.coord.x,visiting.coord.y,0);
 
         if (equal(visiting, ciblePoint)) {
             // On a fini, on reconstruit le chemin grâce au parent de chaque point.
@@ -141,13 +141,16 @@ PointList reconstruct_path() {
     list_init(&cheminComplet);
 
     Point current = realCiblePoint;
+    coord old = current.coord;
 
     while (current.type != DEBUT) {
         list_append(&cheminInverse, current);
+        add_trait(old.x, old.y, current.coord.x, current.coord.y);
         add_passage_point(current.coord.x, current.coord.y, 2);
+        old = current.coord;
         current = get_precedent_theta_start(current);
-        //current = list_get(&VisitedPoints, current.parentPointRank);
     }
+    add_trait(old.x, old.y, current.coord.x, current.coord.y);
     add_passage_point(current.coord.x, current.coord.y, 2);
     list_append(&cheminInverse, current);
 

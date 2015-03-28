@@ -43,31 +43,31 @@ void add_trait(int x1, int y1,int x2, int y2) {
     SDL_GL_SwapBuffers(); // Mise à jour de l'écran
 
 }
-void add_circle(float cx, float cy, float r, int num_segments) 
-{ 
+void add_circle(float cx, float cy, float r, int num_segments)
+{
     num_segments = 100;
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity( );
-    float theta = 2 * 3.1415926 / (float)(num_segments); 
+    float theta = 2 * 3.1415926 / (float)(num_segments);
     float c = cosf(theta);//precalculate the sine and cosine
     float s = sinf(theta);
     float t;
 
-    float x = r;//we start at angle = 0 
-    float y = 0; 
-    
-    glBegin(GL_LINE_LOOP); 
+    float x = r;//we start at angle = 0
+    float y = 0;
+
+    glBegin(GL_LINE_LOOP);
     int ii;
-    for( ii = 0; ii < num_segments; ii++) 
-    { 
-        glVertex2f(x + cx, y + cy);//output vertex 
-        
+    for( ii = 0; ii < num_segments; ii++)
+    {
+        glVertex2f(x + cx, y + cy);//output vertex
+
         //apply the rotation matrix
         t = x;
         x = c * x - s * y;
         y = s * t + c * y;
-    } 
-    glEnd(); 
+    }
+    glEnd();
 
     glFlush();
     SDL_GL_SwapBuffers(); // Mise à jour de l'écran
@@ -77,12 +77,19 @@ void add_passage_point(int x, int y, int type) {
     glLoadIdentity( );
     glTranslated(x, y, 0);
 
-    if (type == 2)
-        glColor3ub(255,0,0);
-    else if (type == 3)
-        glColor3ub(0,255,0);
-    else
-        glColor3ub(0,255,0);
+    switch (type) {
+        case 0:
+            glColor3ub(128,128,128);
+            break;
+        case 1:
+            glColor3ub(0,255,0);
+            break;
+        case 2:
+            glColor3ub(255,0,0);
+            break;
+        default:
+            glColor3ub(0,0,0);
+    }
 
 
     glDisable(GL_TEXTURE_2D);
@@ -109,7 +116,7 @@ int sdl_manage_events() {
         default:
             return 0;
     }
-    
+
     return 0;
 }
 

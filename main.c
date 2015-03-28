@@ -21,7 +21,7 @@ int main() {
     coord b;
     a.x = 310;
     a.y = 2000-350;
-    b.x = 300;
+    b.x = 3000-300;
     b.y = 1000;
 
    pathfinding(a,b);

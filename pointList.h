@@ -16,7 +16,6 @@
 typedef struct {
     int size;       // slots used so far
     int capacity;   // total available slots
-    int* dataIds;   // identifiants basés sur les coordonnées, utilisé pour trouver un point
     Point* data;    // array of integers we're storing
 } PointList;
 

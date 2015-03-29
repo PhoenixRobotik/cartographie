@@ -12,7 +12,6 @@ void list_init(PointList *list) {
     list->capacity = LIST_MALLOC_SIZE;
 
     // allocate memory for list->data
-    list->dataIds = malloc(sizeof(int) * list->capacity);
     list->data = malloc(sizeof(Point) * list->capacity);
 }
 
@@ -60,7 +59,7 @@ void list_printf(PointList *list) {
     for (i = 0; i < list->size; ++i) {
         current = list_get(list, i);
 
-        printf("%2d : x%4d - y%4d ; gS %9.5f - fS %9.5f\n", 
+        printf("%2d : x%4d - y%4d ; gS %9.5f - fS %9.5f\n",
             i, current.coord.x, current.coord.y, current.gScore, current.fScore);
     }
 }

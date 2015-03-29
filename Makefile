@@ -44,7 +44,7 @@ SOURCEFILES=main.c $(SOURCES) $(HEADERS) plateau.png
 
 ifeq ($(SDL),yes)
 	LDFLAGS    += -lSDL -lSDL_image -lGL -lGLU -lSOIL
-	SOURCES += simulation/affichage.c simulation/cartographie.c
+	SOURCES += simulation/affichage.c
 	CFLAGS += -DUSE_SDL=1
 endif
 

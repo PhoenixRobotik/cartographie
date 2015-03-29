@@ -46,3 +46,8 @@ int main() {
 
     return 0;
 }
+
+
+void new_xy_absolu(int x, int y) {
+
+}

@@ -13,7 +13,7 @@
 #include "pointList.h"
 #include "pathfinding.h"
 #if USE_SDL
-#include "debug/affichage.h"
+#include "simulation/affichage.h"
 #endif
 
 // À initialiser
@@ -42,6 +42,7 @@ int main() {
 #if USE_SDL
     while(!sdl_manage_events());
 #endif
+    list_free(&cheminFinal);
 
     return 0;
 }

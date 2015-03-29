@@ -11,7 +11,7 @@
 #include "pathfinding.h"
 
 #if USE_SDL
-#include "debug/affichage.h"
+#include "simulation/affichage.h"
 #endif
 
 PointList VisitedPoints;
@@ -27,15 +27,22 @@ void pathfinding_init() {
     for (i = 0; i < NOMBRE_OBSTACLES_STATIQUES; ++i) {
         Obstacle obstacle = getObstacleStatique(i);
         if (obstacle.type == 0)
-            add_trait(obstacle.point1.x, obstacle.point1.y, obstacle.point2.x, obstacle.point2.y);
+            dessine_obstacle_ligne(obstacle.point1.x, obstacle.point1.y, obstacle.point2.x, obstacle.point2.y);
         else {
-            add_circle(obstacle.point1.x, obstacle.point1.y, obstacle.rayon + ROBOT_R, 20);
+            dessine_obstacle_rond(obstacle.point1.x, obstacle.point1.y, obstacle.rayon + ROBOT_R);
         }
     }
 #endif
 }
 
-
+void pathfinding_start(start_x, start_y, cible_x, cible_y) {
+    coord start, cible;
+    start.x = start_x;
+    start.y = start_y;
+    cible.x = cible_x;
+    cible.y = cible_y;
+    pathfinding(start, cible);
+}
 
 void pathfinding(coord start, coord cible) {
 
@@ -54,8 +61,8 @@ void pathfinding(coord start, coord cible) {
     startPoint.fScore = startPoint.gScore + distance_heuristique(startPoint.coord, realCiblePoint.coord);
 
 #if USE_SDL
-    add_passage_point(start.x,start.y,1);
-    add_passage_point(cible.x,cible.y,1);
+    dessine_point_passage_carto(start.x,start.y,1);
+    dessine_point_passage_carto(cible.x,cible.y,1);
 #endif
 
 #if DEBUG
@@ -83,7 +90,7 @@ void pathfinding(coord start, coord cible) {
         visiting.visited = 1;
         int visitingRank = list_append(&VisitedPoints, visiting);
 #if USE_SDL
-        add_passage_point(visiting.coord.x,visiting.coord.y,0);
+        dessine_point_passage_carto(visiting.coord.x,visiting.coord.y,0);
 #endif
 
         if (equal(visiting, ciblePoint)) {
@@ -167,15 +174,15 @@ PointList reconstruct_path() {
     while (current.type != DEBUT) {
         list_append(&cheminInverse, current);
 #if USE_SDL
-        add_trait(old.x, old.y, current.coord.x, current.coord.y);
-        add_passage_point(current.coord.x, current.coord.y, 2);
+        dessine_obstacle_ligne(old.x, old.y, current.coord.x, current.coord.y);
+        dessine_point_passage_carto(current.coord.x, current.coord.y, 2);
         old = current.coord;
 #endif
         current = get_precedent_theta_start(current);
     }
 #if USE_SDL
-    add_trait(old.x, old.y, current.coord.x, current.coord.y);
-    add_passage_point(current.coord.x, current.coord.y, 2);
+    dessine_obstacle_ligne(old.x, old.y, current.coord.x, current.coord.y);
+    dessine_point_passage_carto(current.coord.x, current.coord.y, 2);
 #endif
     list_append(&cheminInverse, current);
 
@@ -184,5 +191,6 @@ PointList reconstruct_path() {
     for (i = cheminInverse.size-1; i >= 0; --i)
         list_append(&cheminComplet, list_get(&cheminInverse,i));
 
+    list_free(&cheminInverse);
     return cheminComplet;
 }

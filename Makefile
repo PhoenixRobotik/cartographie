@@ -15,12 +15,12 @@
 CC = gcc
 
 CFLAGS  = -W -Wall -fdiagnostics-color=auto -std=c99
-LDFLAGS = -lm 
+LDFLAGS = -lm
 # -lpthread
 EXEC  = carto_robot
 
 # options
-SDL   = no
+SDL   = yes
 DEBUG = yes
 
 ################################################################################
@@ -44,7 +44,7 @@ SOURCEFILES=main.c $(SOURCES) $(HEADERS) plateau.png
 
 ifeq ($(SDL),yes)
 	LDFLAGS    += -lSDL -lSDL_image -lGL -lGLU -lSOIL
-	SOURCES += debug/affichage.c
+	SOURCES += simulation/affichage.c simulation/cartographie.c
 	CFLAGS += -DUSE_SDL=1
 endif
 

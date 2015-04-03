@@ -19,14 +19,16 @@ int collisionSegmentSegment(coord A, coord B, coord I, coord P){
     D.y = B.y - A.y;
     E.x = P.x - I.x;
     E.y = P.y - I.y;
-    float denom = D.x*E.y - D.y*E.x;
+    int denom = D.x*E.y - D.y*E.x;
     if (denom==0)
         return 0;   // Segment et droite parallèles
-    float t = - (A.x*E.y-I.x*E.y-E.x*A.y+E.x*I.y) / denom;
-    if (t<0 || t>1)
+
+    int signe = 2*(denom > 0) - 1;
+    int t = -signe*( A.x*E.y-I.x*E.y-E.x*A.y+E.x*I.y);
+    if (t<=0 || t>=denom * signe)
         return 0;
-    float u = - (-D.x*A.y+D.x*I.y+D.y*A.x-D.y*I.x) / denom;
-    if (u<0 || u>1)
+    int u = -signe*(-D.x*A.y+D.x*I.y+D.y*A.x-D.y*I.x);
+    if (u<=0 || u>=denom * signe)
         return 0;
     return 1;
 }
@@ -42,12 +44,11 @@ int collisionDroiteCercle(coord A, coord B, coord C, float rayon) {
     if (numerateur <0)
         numerateur = -numerateur ;   // valeur absolue ; si c'est négatif, on prend l'opposé.
     float denominateur = sqrt(u.x*u.x + u.y*u.y);  // norme de u
-    float CI = numerateur / denominateur;
 
-    return CI<rayon;
+    return numerateur < (rayon * denominateur);
 }
 int collisionPointCercle(coord A, coord C, float rayon) {
-    return distance(A, C) <= rayon;
+    return distance(A, C) < rayon;
 }
 int collisionSegmentCercle(coord A, coord B, coord C, float rayon){
     if (!collisionDroiteCercle(A, B, C, rayon))
@@ -60,8 +61,8 @@ int collisionSegmentCercle(coord A, coord B, coord C, float rayon){
     BC.x = C.x - B.x;
     BC.y = C.y - B.y;
 
-    float pscal1 = AB.x*AC.x + AB.y*AC.y;  // produit scalaire
-    float pscal2 = (-AB.x)*BC.x + (-AB.y)*BC.y;  // produit scalaire
+    int pscal1 = AB.x*AC.x + AB.y*AC.y;  // produit scalaire
+    int pscal2 = (-AB.x)*BC.x + (-AB.y)*BC.y;  // produit scalaire
     if (pscal1>=0 && pscal2>=0)
         return 1;   // I entre A et B, ok.
     // dernière possibilité, A ou B dans le cercle

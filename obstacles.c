@@ -129,17 +129,21 @@ coord pointLePlusProche(coord origine) {
     coord origine_sur_grille;
     origine_sur_grille.x = origine.x - delta_origine_grille.x;
     origine_sur_grille.y = origine.y - delta_origine_grille.y;
+    printf("%d, %d\n", origine_sur_grille.x,origine_sur_grille.y);
 
     if (passagePossible(origine, origine_sur_grille)==0) {
-        origine_sur_grille.x+=GRID_DX;
+        origine_sur_grille.x+=GRID_X;
+    printf("%d, %d\n", origine_sur_grille.x,origine_sur_grille.y);
         if (passagePossible(origine, origine_sur_grille)==0) {
-            origine_sur_grille.x+=GRID_DX;
+            origine_sur_grille.y+=GRID_Y;
+    printf("%d, %d\n", origine_sur_grille.x,origine_sur_grille.y);
             if (passagePossible(origine, origine_sur_grille)==0) {
-                origine_sur_grille.x-=GRID_DX;
-                if (passagePossible(origine, origine_sur_grille)==0)
+                origine_sur_grille.x-=GRID_X;
+    printf("%d, %d\n", origine_sur_grille.x,origine_sur_grille.y);
+                if (passagePossible(origine, origine_sur_grille)==0) {
                     origine_sur_grille.x=-1;
                     origine_sur_grille.y=-1;
-
+                }
             }
         }
     }

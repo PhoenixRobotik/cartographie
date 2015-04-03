@@ -22,13 +22,13 @@ int y_actuel = 1000;
 int main() {
 
     pathfinding_init();
-/*
+
     coord a;
     coord b;
-    a.x = 310;
-    a.y = 2000-350;
-    b.x = 3000-300;
-    b.y = 1800;
+    a.x = 2700;
+    a.y = 1000;
+    b.x = 2600;
+    b.y = 1010;
 
    pathfinding(a,b);
     PointList cheminFinal = reconstruct_path();
@@ -44,7 +44,7 @@ int main() {
     while(!sdl_manage_events());
 #endif
     list_free(&cheminFinal);
-*/
+
     while(!sdl_manage_events());
     printf("auie\n");
     return 0;

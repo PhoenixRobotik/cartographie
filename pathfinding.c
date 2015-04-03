@@ -17,10 +17,9 @@
 PointList VisitedPoints;
 Point realCiblePoint;
 
+
 void pathfinding_init() {
-    list_init(&VisitedPoints);
     addAllObstaclesStatiques();
-    reset_open();
 #if USE_SDL
     init_sdl_screen();
     dessine_fond();
@@ -36,13 +35,6 @@ void pathfinding_init() {
 #endif
 }
 
-void pathfinding_reinit() {
-    reset_open();
-
-    list_free(&VisitedPoints);
-    list_init(&VisitedPoints);    
-}
-
 int pathfinding_start(int start_x, int start_y, int cible_x, int cible_y) {
     coord start, cible;
     start.x = start_x;
@@ -53,6 +45,24 @@ int pathfinding_start(int start_x, int start_y, int cible_x, int cible_y) {
 }
 
 int pathfinding(coord start, coord cible) {
+    reset_open();
+
+    list_free(&VisitedPoints);
+    list_init(&VisitedPoints);
+    
+#if USE_SDL
+    init_sdl_screen();
+    dessine_fond();
+    int i;
+    for (i = 0; i < NOMBRE_OBSTACLES_STATIQUES; ++i) {
+        Obstacle obstacle = getObstacleStatique(i);
+        if (obstacle.type == 0)
+            dessine_obstacle_ligne(obstacle.point1.x, obstacle.point1.y, obstacle.point2.x, obstacle.point2.y);
+        else {
+            dessine_obstacle_rond(obstacle.point1.x, obstacle.point1.y, obstacle.rayon + ROBOT_R);
+        }
+    }
+#endif
 
     // On "recalibre" les points en fonction de la grille.
     Point realStartPoint= newPoint(start, DEBUT);

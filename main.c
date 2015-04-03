@@ -60,5 +60,4 @@ void new_xy_absolu(int x, int y) {
         x_actuel = x;
         y_actuel = y;        
     }
-    pathfinding_reinit();
 }

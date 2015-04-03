@@ -30,22 +30,42 @@ int is_better(Point a, Point b) {
     return (a.fScore < b.fScore);
 }
 
+int est_sur_la_grille(Point point) {
+    return (point.coord.x % GRID_X == GRID_DX % GRID_X &&
+            point.coord.y % GRID_Y == GRID_DY % GRID_Y);
+}
+
 Point getVoisin(Point point, int i) {
-    int coordonnees_voisins[][2] = 
-            {{-1,0},
-             {0,-1},
-             {+1,0},
-             {0,+1}};
+    int coordonnees_voisins[4][2] =
+            {{-1, 0},
+             { 0,-1},
+             {+1, 0},
+             { 0,+1}};
+
+    int coordonnees_voisins_trim[4][2] = 
+            {{ 0, 0},
+             { 0,+1},
+             {+1, 0},
+             {+1,+1}};
 
     Point voisin = newVoidPoint();
+
+    if (est_sur_la_grille(point)) {
+       // coordonnees_utilisees = coordonnees_voisins;
+
+        voisin.coord = point.coord;
+    } else {
+       // coordonnees_utilisees = coordonnees_voisins_trim;
+
+        voisin.coord.x = point.coord.x - ((point.coord.x - GRID_DX) % GRID_X) + GRID_DX;
+        voisin.coord.y = point.coord.y - ((point.coord.y - GRID_DY) % GRID_Y) + GRID_DY;
+    }
 
     if (i<0 || i>3)
         voisin.type = ERREUR;
     else {
-        coord coordonnees = point.coord;
-        coordonnees.x += GRID_X*coordonnees_voisins[i][0];
-        coordonnees.y += GRID_Y*coordonnees_voisins[i][1];
-        voisin.coord = coordonnees;
+        voisin.coord.x += GRID_X*coordonnees_voisins[i][0];
+        voisin.coord.y += GRID_Y*coordonnees_voisins[i][1];
     }
 
     return voisin;

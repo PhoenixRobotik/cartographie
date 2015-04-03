@@ -93,11 +93,12 @@ void addObstacleNonStatiqueRond(coord centre, int rayon) {
 }
 
 int passagePossible(coord a, coord b) {
-    int i;
-    for (i = 0; i < NOMBRE_OBSTACLES_STATIQUES; ++i)
-        if (conflitPassageObstacle(a, b, ObstaclesStatiques[i])) {
-            return 0;
-        }
+    int i = 0;
+
+    while (i < NOMBRE_OBSTACLES_STATIQUES &&
+           !conflitPassageObstacle(a, b, ObstaclesStatiques[i]))
+        i++;
+    return i == NOMBRE_OBSTACLES_STATIQUES;
     /*for (i = 0; i < nombreObstaclesNonStatiques; ++i)
         if (conflitPassageObstacle(a, b, ObstaclesNonStatiques[i]))
             return 0;

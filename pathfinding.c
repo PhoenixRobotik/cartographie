@@ -49,26 +49,13 @@ int pathfinding(coord start, coord cible) {
 
     list_free(&VisitedPoints);
     list_init(&VisitedPoints);
-    
-#if USE_SDL
-    init_sdl_screen();
-    dessine_fond();
-    int i;
-    for (i = 0; i < NOMBRE_OBSTACLES_STATIQUES; ++i) {
-        Obstacle obstacle = getObstacleStatique(i);
-        if (obstacle.type == 0)
-            dessine_obstacle_ligne(obstacle.point1.x, obstacle.point1.y, obstacle.point2.x, obstacle.point2.y);
-        else {
-            dessine_obstacle_rond(obstacle.point1.x, obstacle.point1.y, obstacle.rayon + ROBOT_R);
-        }
-    }
-#endif
 
     // On "recalibre" les points en fonction de la grille.
     Point realStartPoint= newPoint(start, DEBUT);
     Point startPoint    = newPoint(pointLePlusProche(start), NOEUD);
     Point ciblePoint    = newPoint(pointLePlusProche(cible), NOEUD);
           realCiblePoint= newPoint(cible, CIBLE);
+    printf("%d, %d\n", ciblePoint.coord.x, ciblePoint.coord.y);
 
     realStartPoint.gScore = 0;
     realStartPoint.fScore = distance_heuristique(realStartPoint.coord, realCiblePoint.coord);

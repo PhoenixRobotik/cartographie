@@ -16,12 +16,13 @@
 #include "simulation/affichage.h"
 #endif
 
-// À initialiser
+int x_actuel = 300;
+int y_actuel = 1000;
 
 int main() {
 
     pathfinding_init();
-
+/*
     coord a;
     coord b;
     a.x = 310;
@@ -43,11 +44,21 @@ int main() {
     while(!sdl_manage_events());
 #endif
     list_free(&cheminFinal);
-
+*/
+    while(!sdl_manage_events());
+    printf("auie\n");
     return 0;
 }
 
 
 void new_xy_absolu(int x, int y) {
+    printf("%d, %d\n", x, y);
+    //pathfinding_init();
+    int on_a_un_chemin = pathfinding_start(x_actuel, y_actuel, x, y);
 
+    if (on_a_un_chemin) {
+        x_actuel = x;
+        y_actuel = y;        
+    }
+    pathfinding_reinit();
 }

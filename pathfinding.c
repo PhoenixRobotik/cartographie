@@ -20,6 +20,7 @@ Point realCiblePoint;
 void pathfinding_init() {
     list_init(&VisitedPoints);
     addAllObstaclesStatiques();
+    reset_open();
 #if USE_SDL
     init_sdl_screen();
     dessine_fond();
@@ -35,16 +36,23 @@ void pathfinding_init() {
 #endif
 }
 
-void pathfinding_start(int start_x, int start_y, int cible_x, int cible_y) {
+void pathfinding_reinit() {
+    reset_open();
+
+    list_free(&VisitedPoints);
+    list_init(&VisitedPoints);    
+}
+
+int pathfinding_start(int start_x, int start_y, int cible_x, int cible_y) {
     coord start, cible;
     start.x = start_x;
     start.y = start_y;
     cible.x = cible_x;
     cible.y = cible_y;
-    pathfinding(start, cible);
+    return pathfinding(start, cible);
 }
 
-void pathfinding(coord start, coord cible) {
+int pathfinding(coord start, coord cible) {
 
     // On "recalibre" les points en fonction de la grille.
     Point realStartPoint= newPoint(start, DEBUT);
@@ -75,7 +83,7 @@ void pathfinding(coord start, coord cible) {
 #endif
         // OUI !
         realCiblePoint.parentPointRank = startPoint.parentPointRank;
-        return;
+        return 1;
     }
 #if DEBUG
     printf("on ne peut pas aller directement\n");
@@ -98,7 +106,7 @@ void pathfinding(coord start, coord cible) {
             realCiblePoint.parentPointRank = visitingRank;
             realCiblePoint.gScore = visiting.gScore + distance(visiting.coord, realCiblePoint.coord);
             realCiblePoint.fScore = realCiblePoint.gScore;
-            return;
+            return 1;
         }
 
         int voisinId;
@@ -140,6 +148,7 @@ void pathfinding(coord start, coord cible) {
 #if DEBUG
     printf("pas de chemin trouvé !\n");
 #endif
+    return 0;
 }
 
 PointList visitedPoints() {

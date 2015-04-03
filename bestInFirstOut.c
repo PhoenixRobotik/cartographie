@@ -10,6 +10,19 @@
 int openCount = 0;
 node* headOfOpenPoints = NULL;
 
+void reset_open() {
+    node* current = headOfOpenPoints;
+    node* next;
+    while(current != NULL) {
+        next = current->next;
+        free(current);
+        openCount--;
+        current = next;
+    }
+    headOfOpenPoints = current;
+}
+
+
 Point pop_best_open_point(){
     Point bestOpenPoint;
 
@@ -56,7 +69,7 @@ void add_to_open(Point newPoint){
 Point* find_in_open(Point point) {
     node* current = headOfOpenPoints;
     while(current != NULL) {
-         if(equal(point, current->point))
+        if(equal(point, current->point))
             return &(current->point);
         current = current->next;
     }

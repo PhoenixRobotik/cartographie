@@ -35,7 +35,7 @@ void pathfinding_init() {
 #endif
 }
 
-void pathfinding_start(start_x, start_y, cible_x, cible_y) {
+void pathfinding_start(int start_x, int start_y, int cible_x, int cible_y) {
     coord start, cible;
     start.x = start_x;
     start.y = start_y;

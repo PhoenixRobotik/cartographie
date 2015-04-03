@@ -1,3 +1,6 @@
 *.o
 carto_robot
 carto_robot.*
+
+plateau.png
+plateau.xcf

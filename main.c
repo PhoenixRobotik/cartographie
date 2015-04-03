@@ -25,10 +25,10 @@ int main() {
 
     coord a;
     coord b;
-    a.x = 2700;
-    a.y = 1000;
-    b.x = 2600;
-    b.y = 1010;
+    a.x = 330;
+    a.y = 300;
+    b.x = 666;
+    b.y = 1703;
 
    pathfinding(a,b);
     PointList cheminFinal = reconstruct_path();

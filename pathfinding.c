@@ -44,59 +44,73 @@ int pathfinding_start(int start_x, int start_y, int cible_x, int cible_y) {
     return pathfinding(start, cible);
 }
 
-int pathfinding(coord start, coord cible) {
-    reset_open();
+Point trim_point(Point point) {
+    if (est_sur_la_grille(point))
+        return point;
 
+    Point pointTrim = point;
+
+    int i;
+    for (i = 0; i < 4; ++i) {
+        pointTrim = getVoisin(point, i);
+        if (passagePossible(point.coord, pointTrim.coord))
+            return pointTrim;
+    }
+    pointTrim.type = ERREUR;
+    return pointTrim;
+}
+
+
+int pathfinding(coord start, coord cible) {
+    // On nettoie les tableaux, au cas où
+    reset_open();
     list_free(&VisitedPoints);
     list_init(&VisitedPoints);
 
-    // On "recalibre" les points en fonction de la grille.
-    Point realStartPoint= newPoint(start, DEBUT);
-    Point startPoint    = newPoint(pointLePlusProche(start), NOEUD);
-    Point ciblePoint    = newPoint(pointLePlusProche(cible), NOEUD);
-          realCiblePoint= newPoint(cible, CIBLE);
-    printf("%d, %d\n", ciblePoint.coord.x, ciblePoint.coord.y);
-
-    realStartPoint.gScore = 0;
-    realStartPoint.fScore = distance_heuristique(realStartPoint.coord, realCiblePoint.coord);
-
-    startPoint.parentPointRank = list_append(&VisitedPoints, realStartPoint);
-
-    startPoint.gScore = distance(start, startPoint.coord);
-    startPoint.fScore = startPoint.gScore + distance_heuristique(startPoint.coord, realCiblePoint.coord);
-
-#if USE_SDL
-    dessine_point_passage_carto(start.x,start.y,1);
-    dessine_point_passage_carto(cible.x,cible.y,1);
-#endif
-
-#if DEBUG
-    printf("on peut aller directement ?\n");
-#endif
-    // Tout d'abord on regarde si on peut aller tranquillement de start à cible :
-    if (passagePossible(start, cible)) {
-#if DEBUG
-        printf("on peut aller directement\n");
-#endif
-        // OUI !
-        realCiblePoint.parentPointRank = startPoint.parentPointRank;
-        return 1;
-    }
-#if DEBUG
-    printf("on ne peut pas aller directement\n");
-#endif
-
+    // On définit le point de départ
+    Point startPoint= newPoint(start, DEBUT);
+    startPoint.gScore = 0;
+    startPoint.fScore = distance_heuristique(startPoint.coord, realCiblePoint.coord);
+    // Et on l'ajoute à la liste des visités ET des ouverts TODO changer ça
+    int startPointRank = list_append(&VisitedPoints, startPoint);
     add_to_open(startPoint);
 
+    // On définit le point d'arrivée : on récupère son voisin sur la grille
+    // le plus susceptible d'être visité en premier.
+          realCiblePoint= newPoint(cible, CIBLE);
+    Point ciblePoint = trim_point(realCiblePoint);
+    if (ciblePoint.type == ERREUR)
+        return 0;
+
+    #if USE_SDL
+    dessine_point_passage_carto(start.x,start.y,1);
+    dessine_point_passage_carto(cible.x,cible.y,1);
+    #endif
+
+    // Tout d'abord on regarde si on peut aller tranquillement de start à cible :
+    #if DEBUG
+    printf("on peut aller directement ?\n"); 
+    #endif
+    if (passagePossible(start, cible)) {
+        #if DEBUG
+                printf("on peut aller directement !\n");
+        #endif
+        // OUI !
+        realCiblePoint.parentPointRank = startPointRank;
+        return 1;
+    }
+    #if DEBUG
+    printf("on ne peut pas aller directement :(\n");
+    #endif
 
     while(open_size()!=0) {
-        //printf("whileBoucle\n");
+
         Point visiting = pop_best_open_point();
         visiting.visited = 1;
         int visitingRank = list_append(&VisitedPoints, visiting);
-#if USE_SDL
+        #if USE_SDL
         dessine_point_passage_carto(visiting.coord.x,visiting.coord.y,0);
-#endif
+        #endif
 
         if (equal(visiting, ciblePoint)) {
             // On a fini, on reconstruit le chemin grâce au parent de chaque point.
@@ -105,12 +119,8 @@ int pathfinding(coord start, coord cible) {
             realCiblePoint.fScore = realCiblePoint.gScore;
             return 1;
         }
-
         int voisinId;
         for (voisinId = 0; voisinId < 4; ++voisinId) {
-           // int i=0;
-           // while(++i<10000000);
-            //printf("go\n");
             Point voisin = getVoisin(visiting, voisinId);
             if (!passagePossible(visiting.coord, voisin.coord))
                 continue;
@@ -120,7 +130,6 @@ int pathfinding(coord start, coord cible) {
                 continue;
 
             float tentative_gScore = visiting.gScore + distance(visiting.coord, voisin.coord);
-            //printf("tentative_gScore %f\n", tentative_gScore);
 
             Point* voisinOpenPointer = find_in_open(voisin);
             int voisin_is_open = 1;
@@ -131,7 +140,6 @@ int pathfinding(coord start, coord cible) {
             }
 
             if(!voisin_is_open || tentative_gScore < voisinOpenPointer->gScore) {
-                //printf("c\n");
                 voisinOpenPointer->parentPointRank = visitingRank;
                 voisinOpenPointer->gScore = tentative_gScore;
                 voisinOpenPointer->fScore = tentative_gScore
@@ -142,9 +150,9 @@ int pathfinding(coord start, coord cible) {
             }
         }
     }
-#if DEBUG
+    #if DEBUG
     printf("pas de chemin trouvé !\n");
-#endif
+    #endif
     return 0;
 }
 

@@ -36,36 +36,35 @@ int est_sur_la_grille(Point point) {
 }
 
 Point getVoisin(Point point, int i) {
-    int coordonnees_voisins[4][2] =
+    Point voisin = newVoidPoint();
+    if (i<0 || i>3) {
+        voisin.type = ERREUR;
+        return voisin;
+    }
+
+    voisin.coord = point.coord;
+
+    int coordonnees_voisins_si_point_sur_la_grille[4][2] =
             {{-1, 0},
              { 0,-1},
              {+1, 0},
              { 0,+1}};
 
-    int coordonnees_voisins_trim[4][2] = 
+    int coordonnees_voisins_si_point_decale[4][2] = 
             {{ 0, 0},
              { 0,+1},
              {+1, 0},
              {+1,+1}};
 
-    Point voisin = newVoidPoint();
-
     if (est_sur_la_grille(point)) {
-       // coordonnees_utilisees = coordonnees_voisins;
+        voisin.coord.x += GRID_X*coordonnees_voisins_si_point_sur_la_grille[i][0];
+        voisin.coord.y += GRID_Y*coordonnees_voisins_si_point_sur_la_grille[i][1];
 
-        voisin.coord = point.coord;
     } else {
-       // coordonnees_utilisees = coordonnees_voisins_trim;
-
-        voisin.coord.x = point.coord.x - ((point.coord.x - GRID_DX) % GRID_X) + GRID_DX;
-        voisin.coord.y = point.coord.y - ((point.coord.y - GRID_DY) % GRID_Y) + GRID_DY;
-    }
-
-    if (i<0 || i>3)
-        voisin.type = ERREUR;
-    else {
-        voisin.coord.x += GRID_X*coordonnees_voisins[i][0];
-        voisin.coord.y += GRID_Y*coordonnees_voisins[i][1];
+        voisin.coord.x -= ((point.coord.x - GRID_DX) % GRID_X) + GRID_DX;
+        voisin.coord.y -= ((point.coord.y - GRID_DY) % GRID_Y) + GRID_DY;
+        voisin.coord.x += GRID_X*coordonnees_voisins_si_point_decale[i][0];
+        voisin.coord.y += GRID_Y*coordonnees_voisins_si_point_decale[i][1];
     }
 
     return voisin;

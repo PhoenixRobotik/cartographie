@@ -52,7 +52,6 @@ void list_free(PointList *list) {
     list->size = 0;
     list->capacity = 0;
     free(list->data);
-    list->data = realloc(list->data, sizeof(Point) * LIST_MALLOC_SIZE);
 }
 
 #if DEBUG

@@ -26,9 +26,9 @@ int main() {
     coord a;
     coord b;
     a.x = 330;
-    a.y = 300;
-    b.x = 666;
-    b.y = 1703;
+    a.y = 1800;
+    b.x = 3600;
+    b.y = 1003;
 
    pathfinding(a,b);
     PointList cheminFinal = reconstruct_path();
@@ -45,8 +45,6 @@ int main() {
 #endif
     list_free(&cheminFinal);
 
-    while(!sdl_manage_events());
-    printf("auie\n");
     return 0;
 }
 

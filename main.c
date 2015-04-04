@@ -40,6 +40,8 @@ void new_xy_absolu(int x, int y) {
 
 int main() {
     new_xy_absolu(2700,1600);
+    new_xy_absolu(300,1600);
+    new_xy_absolu(2700,1600);
 
    // pathfinding(330, 1800,
    //            2600, 1003);

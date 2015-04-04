@@ -66,5 +66,4 @@ void return_path_found(int tableau[][2]) {
         tableau[i][0] = valeur.coord.x;
         tableau[i][1] = valeur.coord.y;
     }
-    list_free(&cheminComplet);
 }

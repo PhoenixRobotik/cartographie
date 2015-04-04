@@ -1,16 +1,16 @@
+#include <stdlib.h>
+#include "point.h"
+#include "bestInFirstOut.h"
+
 // BIFO : Best In First Out
 
 //  On va créer une re de liste dans laquelle on peut rajouter
 //  des points, et "pop" va donner le point qui a le meilleur score.
 
-#include <stdlib.h>
-#include "point.h"
-#include "bestInFirstOut.h"
-
 int openCount = 0;
 node* headOfOpenPoints = NULL;
 
-void reset_open() {
+int reset_open() {
     node* current = headOfOpenPoints;
     node* next;
     while(current != NULL) {
@@ -20,19 +20,21 @@ void reset_open() {
         current = next;
     }
     headOfOpenPoints = current;
+    if (openCount != 0) {
+        // There is a fatal bug in this code then, creating mem leak.
+        openCount = 0;
+        headOfOpenPoints = NULL;
+        return -1;
+    }
+    return 0;
 }
 
-
-Point pop_best_open_point(){
+Point pop_best_open_point() {
     Point bestOpenPoint;
 
-    //TODO Il y a là une erreur, à gérer
-    if (openCount == 0) {
-        bestOpenPoint.type = ERREUR;
-        return bestOpenPoint;
-        //printf("Error : cannot pop_best_open_point, BIFO is empty !\n");
-        //exit(1);
-    }
+    //TODO Il y a là une erreur à gérer
+    if (openCount == 0)
+        return errorPoint();
 
     bestOpenPoint = headOfOpenPoints->point;
 
@@ -45,7 +47,7 @@ Point pop_best_open_point(){
     return bestOpenPoint;
 }
 
-void add_to_open(Point newPoint){
+int add_to_open(Point newPoint) {
     node* newNode = (node*) malloc(sizeof(node));
     newNode->point = newPoint;
 
@@ -63,6 +65,10 @@ void add_to_open(Point newPoint){
         newNode->next = current->next;
         current->next = newNode;
     }
+
+    #if USE_SDL
+    dessine_point_passage_carto(newPoint.coord.x,newPoint.coord.y,0);
+    #endif
     openCount++;
 }
 

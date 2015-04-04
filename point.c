@@ -7,8 +7,6 @@ Point newVoidPoint(){
     point.gScore = 0;
     point.fScore = 0;
 
-    point.visited = 0;
-
     point.parentPointRank = -1;
     return point;
 }
@@ -20,6 +18,12 @@ Point newPoint(coord position, PointType type){
     return point;
 }
 
+Point errorPoint() {
+    Point point;
+    point.type = ERREUR;
+    return point;
+}
+
 int equal(Point a, Point b) {
     return (   a.coord.x == b.coord.x
             && a.coord.y == b.coord.y );
@@ -28,11 +32,6 @@ int equal(Point a, Point b) {
 
 int is_better(Point a, Point b) {
     return (a.fScore < b.fScore);
-}
-
-int est_sur_la_grille(Point point) {
-    return (point.coord.x % GRID_X == GRID_DX % GRID_X &&
-            point.coord.y % GRID_Y == GRID_DY % GRID_Y);
 }
 
 Point getVoisin(Point point, int i) {
@@ -56,7 +55,7 @@ Point getVoisin(Point point, int i) {
              {+1, 0},
              {+1,+1}};
 
-    if (est_sur_la_grille(point)) {
+    if (est_sur_la_grille(point.coord)) {
         voisin.coord.x += GRID_X*coordonnees_voisins_si_point_sur_la_grille[i][0];
         voisin.coord.y += GRID_Y*coordonnees_voisins_si_point_sur_la_grille[i][1];
 

@@ -18,6 +18,8 @@ typedef struct {
     int y;
 } coord;
 
+int est_sur_la_grille(coord coord);
+
 float distance(coord pointA, coord pointB);
 float distance_heuristique(coord A, coord B);
 

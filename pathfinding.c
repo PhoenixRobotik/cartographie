@@ -45,7 +45,7 @@ int pathfinding_start(int start_x, int start_y, int cible_x, int cible_y) {
 }
 
 Point trim_point(Point point) {
-    if (est_sur_la_grille(point))
+    if (est_sur_la_grille(point.coord))
         return point;
 
     Point pointTrim = point;
@@ -83,33 +83,37 @@ int pathfinding(coord start, coord cible) {
         return 0;
 
     #if USE_SDL
-    dessine_point_passage_carto(start.x,start.y,1);
-    dessine_point_passage_carto(cible.x,cible.y,1);
+    dessine_point_passage_carto(start.x,start.y,3);
+    dessine_point_passage_carto(cible.x,cible.y,3);
     #endif
 
     // Tout d'abord on regarde si on peut aller tranquillement de start à cible :
     #if DEBUG
     printf("on peut aller directement ?\n"); 
-    #endif
     if (passagePossible(start, cible)) {
-        #if DEBUG
-                printf("on peut aller directement !\n");
-        #endif
+        printf("on peut aller directement !\n");
         // OUI !
         realCiblePoint.parentPointRank = startPointRank;
         return 1;
     }
-    #if DEBUG
     printf("on ne peut pas aller directement :(\n");
+    #else
+    if (passagePossible(start, cible)) {
+        // OUI !
+        realCiblePoint.parentPointRank = startPointRank;
+        return 1;
+    }
     #endif
 
+    // Tant qu'il y a des points à visiter…
     while(open_size()!=0) {
-
         Point visiting = pop_best_open_point();
-        visiting.visited = 1;
         int visitingRank = list_append(&VisitedPoints, visiting);
+        if (visitingRank == -1)
+            return 0;
+
         #if USE_SDL
-        dessine_point_passage_carto(visiting.coord.x,visiting.coord.y,0);
+        dessine_point_passage_carto(visiting.coord.x,visiting.coord.y,1);
         #endif
 
         if (equal(visiting, ciblePoint)) {
@@ -119,13 +123,15 @@ int pathfinding(coord start, coord cible) {
             realCiblePoint.fScore = realCiblePoint.gScore;
             return 1;
         }
-        int voisinId;
+
+
+        int  voisinId;
         for (voisinId = 0; voisinId < 4; ++voisinId) {
             Point voisin = getVoisin(visiting, voisinId);
             if (!passagePossible(visiting.coord, voisin.coord))
                 continue;
 
-            // Si on l'a déjà VISITÉ on passe (peut-être on pourrait quand même changer le parent ?)
+            // Si on l'a déjà VISITÉ on passe
             if (list_find(&VisitedPoints, voisin)!=-1)
                 continue;
 

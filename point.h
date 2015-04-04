@@ -20,14 +20,13 @@ typedef struct  {
     float gScore;       // Le coût pour y aller
     float fScore;       // Le coût estimé pour aller jusqu'à la cible en passant par là
 
-    int visited;        // Booléen : si on l'a déjà visité
-
     int parentPointRank;// Le rang du point parent dans la liste des points visités ou -1
     //struct _Point* parent;  // Le parent dans le chemin. Est défini quand on le visite.
 } Point;
 
 Point newVoidPoint();
 Point newPoint(coord position, PointType type);
+Point errorPoint();
 
 int equal(Point a, Point b);
 int is_better(Point a, Point b);

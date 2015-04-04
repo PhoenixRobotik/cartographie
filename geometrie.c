@@ -2,6 +2,11 @@
 #include "geometrie.h"
 
 
+int est_sur_la_grille(coord coord) {
+    return (coord.x % GRID_X == GRID_DX % GRID_X &&
+            coord.y % GRID_Y == GRID_DY % GRID_Y);
+}
+
 float distance(coord pointA, coord pointB) {
     int u=(pointA.x-pointB.x),
         v=(pointA.y-pointB.y);

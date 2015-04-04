@@ -1,5 +1,8 @@
 #include <stdlib.h>
 #include "point.h"
+#if USE_SDL
+#include "simulation/affichage.h"
+#endif
 #include "bestInFirstOut.h"
 
 // BIFO : Best In First Out
@@ -69,7 +72,7 @@ int add_to_open(Point newPoint) {
     #if USE_SDL
     dessine_point_passage_carto(newPoint.coord.x,newPoint.coord.y,0);
     #endif
-    openCount++;
+    return openCount++;
 }
 
 Point* find_in_open(Point point) {

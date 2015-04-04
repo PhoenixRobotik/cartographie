@@ -1,11 +1,12 @@
 #ifndef ASTAR_H
 #define ASTAR_H
-void pathfinding_init();
 
-int pathfinding_start(int start_x, int start_y, int cible_x, int cible_y);
-int pathfinding(coord start, coord cible);
 
-PointList reconstruct_path();
+void pre_astar();
+int astar(coord start, coord cible);
+void post_astar();
+
+int reconstruct_path(PointList *cheminComplet);
 
 PointList visitedPoints();
 

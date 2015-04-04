@@ -1,17 +1,8 @@
-
 #if DEBUG
 #include <stdio.h>
 #endif
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
 
-#include "geometrie.h"
-#include "obstacles.h"
-#include "point.h"
-#include "bestInFirstOut.h"
-#include "pointList.h"
-#include "astar.h"
+#include "pathfinding.h"
 #if USE_SDL
 #include "simulation/affichage.h"
 #endif
@@ -21,17 +12,10 @@ int y_actuel = 1000;
 
 int main() {
 
-    pathfinding_init();
+   // pathfinding(330, 1800,
+   //            2600, 1003);
 
-    coord a;
-    coord b;
-    a.x = 330;
-    a.y = 1800;
-    b.x = 2600;
-    b.y = 1003;
-
-   pathfinding(a,b);
-    PointList cheminFinal = reconstruct_path();
+/*    PointList cheminFinal = reconstruct_path();
 
 #if DEBUG
     printf("visited, %d\n", visitedPoints().size);
@@ -39,20 +23,18 @@ int main() {
 
     //PointList visitedPointsV = visitedPoints();
     list_printf(&cheminFinal);
-#endif
+#endif*/
 #if USE_SDL
     while(!sdl_manage_events());
 #endif
-    list_free(&cheminFinal);
 
     return 0;
 }
 
 
 void new_xy_absolu(int x, int y) {
-    printf("%d, %d\n", x, y);
-    //pathfinding_init();
-    int on_a_un_chemin = pathfinding_start(x_actuel, y_actuel, x, y);
+    int on_a_un_chemin = pathfinding(x_actuel, y_actuel, x, y);
+    printf("chemin trouvé ? %d\n", on_a_un_chemin);
 
     if (on_a_un_chemin) {
         x_actuel = x;

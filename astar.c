@@ -1,4 +1,3 @@
-
 #if DEBUG
 #include <stdio.h>
 #endif
@@ -17,33 +16,6 @@
 PointList VisitedPoints;
 Point realCiblePoint;
 
-
-void pathfinding_init() {
-    addAllObstaclesStatiques();
-#if USE_SDL
-    init_sdl_screen();
-    dessine_fond();
-    int i;
-    for (i = 0; i < NOMBRE_OBSTACLES_STATIQUES; ++i) {
-        Obstacle obstacle = getObstacleStatique(i);
-        if (obstacle.type == 0)
-            dessine_obstacle_ligne(obstacle.point1.x, obstacle.point1.y, obstacle.point2.x, obstacle.point2.y);
-        else {
-            dessine_obstacle_rond(obstacle.point1.x, obstacle.point1.y, obstacle.rayon + ROBOT_R);
-        }
-    }
-#endif
-}
-
-int pathfinding_start(int start_x, int start_y, int cible_x, int cible_y) {
-    coord start, cible;
-    start.x = start_x;
-    start.y = start_y;
-    cible.x = cible_x;
-    cible.y = cible_y;
-    return pathfinding(start, cible);
-}
-
 Point trim_point(Point point) {
     if (est_sur_la_grille(point.coord))
         return point;
@@ -60,13 +32,14 @@ Point trim_point(Point point) {
     return pointTrim;
 }
 
-
-int pathfinding(coord start, coord cible) {
-    // On nettoie les tableaux, au cas où
-    reset_open();
+void pre_astar() {
+    list_init(&VisitedPoints);    
+}
+void post_astar() {
     list_free(&VisitedPoints);
-    list_init(&VisitedPoints);
-
+    reset_open();    
+}
+int astar(coord start, coord cible) {
     // On définit le point de départ
     Point startPoint= newPoint(start, DEBUT);
     startPoint.gScore = 0;
@@ -162,9 +135,11 @@ int pathfinding(coord start, coord cible) {
     return 0;
 }
 
-PointList visitedPoints() {
-    return VisitedPoints;
-}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                             THETA STAR
+////////////////////////////////////////////////////////////////////////////////
+
 
 Point get_precedent_theta_start(Point current) {
     Point precedent, subprecedent;
@@ -180,37 +155,39 @@ Point get_precedent_theta_start(Point current) {
     return precedent;
 }
 
-PointList reconstruct_path() {
-    PointList cheminInverse, cheminComplet;
+int reconstruct_path(PointList *cheminComplet) {
+    PointList cheminInverse;
 
     list_init(&cheminInverse);
-    list_init(&cheminComplet);
+    list_free( cheminComplet);
+    list_init( cheminComplet);
 
     Point current = realCiblePoint;
-#if USE_SDL
+    #if USE_SDL
     coord old = current.coord;
-#endif
+    #endif
 
     while (current.type != DEBUT) {
         list_append(&cheminInverse, current);
-#if USE_SDL
+        #if USE_SDL
         dessine_obstacle_ligne(old.x, old.y, current.coord.x, current.coord.y);
         dessine_point_passage_carto(current.coord.x, current.coord.y, 2);
         old = current.coord;
-#endif
+        #endif
         current = get_precedent_theta_start(current);
     }
-#if USE_SDL
+
+    #if USE_SDL
     dessine_obstacle_ligne(old.x, old.y, current.coord.x, current.coord.y);
     dessine_point_passage_carto(current.coord.x, current.coord.y, 2);
-#endif
+    #endif
     list_append(&cheminInverse, current);
 
     // Maintenant, on retourne la liste :)
     int i;
     for (i = cheminInverse.size-1; i >= 0; --i)
-        list_append(&cheminComplet, list_get(&cheminInverse,i));
+        list_append(cheminComplet, list_get(&cheminInverse,i));
 
     list_free(&cheminInverse);
-    return cheminComplet;
+    return 0;
 }

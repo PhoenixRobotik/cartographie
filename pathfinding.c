@@ -56,7 +56,15 @@ int pathfinding(int start_x, int start_y, int cible_x, int cible_y) {
     post_astar();
     return 0;
 }
-
-PointList get_path_found() {
-    return cheminComplet;
+int return_length_of_path_found() {
+    return cheminComplet.size;
+}
+void return_path_found(int tableau[][2]) {
+    int i;
+    for (i = 0; i < cheminComplet.size; ++i) {
+        Point valeur = cheminComplet.data[i];
+        tableau[i][0] = valeur.coord.x;
+        tableau[i][1] = valeur.coord.y;
+    }
+    list_free(&cheminComplet);
 }

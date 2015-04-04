@@ -12,18 +12,26 @@ int y_actuel = 1000;
 
 
 void new_xy_absolu(int x, int y) {
+
+    // On appelle le pathfinding et on regarde si il y a un chemin
     int on_a_un_chemin = pathfinding(x_actuel, y_actuel, x, y);
     printf("chemin trouvé ? %d\n", on_a_un_chemin);
 
     if (on_a_un_chemin) {
+
+        // On récupère le nombre de points de ce chemin
         int taille = return_length_of_path_found();
+
+        // On récupère le chemin lui-même
         int chemin_trouve[taille][2];
         return_path_found(chemin_trouve);
+
+        // On l'affiche
         int i;
         for (i = 0; i < taille; ++i)
             printf("%d -- %d\n", chemin_trouve[i][0], chemin_trouve[i][1]);
 
-        // Si il y a un chemin de trouvé, on y va !
+        // Et on l'exécute !
         x_actuel = x;
         y_actuel = y;        
     }

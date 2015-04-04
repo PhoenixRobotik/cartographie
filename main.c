@@ -11,7 +11,7 @@
 #include "point.h"
 #include "bestInFirstOut.h"
 #include "pointList.h"
-#include "pathfinding.h"
+#include "astar.h"
 #if USE_SDL
 #include "simulation/affichage.h"
 #endif
@@ -27,7 +27,7 @@ int main() {
     coord b;
     a.x = 330;
     a.y = 1800;
-    b.x = 3600;
+    b.x = 2600;
     b.y = 1003;
 
    pathfinding(a,b);

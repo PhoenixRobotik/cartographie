@@ -31,7 +31,7 @@ SOURCES=main.c \
 		point.c \
 		pointList.c \
 		bestInFirstOut.c \
-		pathfinding.c \
+		astar.c \
 
 HEADERS=$(SOURCES:.c=.h)
 OBJECTS=$(SOURCES:.c=.o)

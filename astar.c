@@ -8,7 +8,7 @@
 #include "pointList.h"
 #include "obstacles.h"
 #include "bestInFirstOut.h"
-#include "pathfinding.h"
+#include "astar.h"
 
 #if USE_SDL
 #include "simulation/affichage.h"

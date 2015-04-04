@@ -1,5 +1,5 @@
-#ifndef PATHFINDING_H
-#define PATHFINDING_H
+#ifndef ASTAR_H
+#define ASTAR_H
 void pathfinding_init();
 
 int pathfinding_start(int start_x, int start_y, int cible_x, int cible_y);
@@ -10,4 +10,4 @@ PointList reconstruct_path();
 PointList visitedPoints();
 
 
-#endif // PATHFINDING_H
+#endif // ASTAR_H

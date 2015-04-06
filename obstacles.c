@@ -1,4 +1,7 @@
 #include "geometrie.h"
+#if USE_SDL
+#include "simulation/affichage.h"
+#endif
 #include "obstacles.h"
 
 
@@ -84,12 +87,23 @@ Obstacle getObstacleStatique(int i) {
 }
 
 
-void addObstacleNonStatiqueRond(coord centre, int rayon) {
+int addObstacleNonStatiqueRond(coord centre, int rayon) {
+    if (nombreObstaclesNonStatiques == NOMBRE_OBSTACLES_NON_STATIQUES_MAX)
+        return -1;
     Obstacle obstacle;
     obstacle.type   = 1;
     obstacle.point1 = centre;
     obstacle.rayon  = rayon;
     ObstaclesNonStatiques[nombreObstaclesNonStatiques++]=obstacle;
+    #if USE_SDL
+    dessine_obstacle_rond (obstacle.point1.x, obstacle.point1.y, obstacle.rayon + ROBOT_R);
+    #endif
+    printf("%d\n", nombreObstaclesNonStatiques);
+    return nombreObstaclesNonStatiques;
+}
+
+void reinit_obstacles_non_statiques() {
+    nombreObstaclesNonStatiques = 0;
 }
 
 int passagePossible(coord a, coord b) {
@@ -98,11 +112,19 @@ int passagePossible(coord a, coord b) {
     while (i < NOMBRE_OBSTACLES_STATIQUES &&
            !conflitPassageObstacle(a, b, ObstaclesStatiques[i]))
         i++;
-    return i == NOMBRE_OBSTACLES_STATIQUES;
-    /*for (i = 0; i < nombreObstaclesNonStatiques; ++i)
-        if (conflitPassageObstacle(a, b, ObstaclesNonStatiques[i]))
-            return 0;
-    */
+
+    if (i < NOMBRE_OBSTACLES_STATIQUES)
+        return 0;
+
+    i = 0;
+
+    while (i < nombreObstaclesNonStatiques &&
+           !conflitPassageObstacle(a, b, ObstaclesNonStatiques[i]))
+        i++;
+
+    if (i < nombreObstaclesNonStatiques)
+        return 0;
+
     return 1;
 }
 

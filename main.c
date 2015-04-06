@@ -39,6 +39,8 @@ void new_xy_absolu(int x, int y) {
 
 
 int main() {
+    pathfinding_init();
+    nouvel_obstacle_rond(1500, 1200, 200);
     new_xy_absolu(2700,1600);
     new_xy_absolu(300,1600);
     new_xy_absolu(2700,1600);

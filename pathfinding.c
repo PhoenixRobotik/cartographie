@@ -67,3 +67,14 @@ void return_path_found(int tableau[][2]) {
         tableau[i][1] = valeur.coord.y;
     }
 }
+
+int nouvel_obstacle_rond(int x, int y, int rayon) {
+    coord centre;
+    centre.x = x;
+    centre.y = y;
+    return addObstacleNonStatiqueRond(centre, rayon);
+}
+void reinitialise_obstacles_temporaires() {
+    reinit_obstacles_non_statiques();
+
+}

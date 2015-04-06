@@ -18,7 +18,8 @@ Obstacle getObstacleStatique(int i);
 #define NOMBRE_OBSTACLES_STATIQUES 34
 
 // Gestion des obstacles non statiques (plots, etc, gérés par la stratégie)
-void addObstacleNonStatiqueRond(coord centre, int rayon);
+int addObstacleNonStatiqueRond(coord centre, int rayon);
+void reinit_obstacles_non_statiques();
 
 #define NOMBRE_OBSTACLES_NON_STATIQUES_MAX 4
 

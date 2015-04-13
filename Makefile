@@ -17,7 +17,8 @@ AR = ar
 CFLAGS  = -W -Wall -fdiagnostics-color=auto -std=c99
 LDFLAGS = -lm
 # -lpthread
-EXEC  = carto_robot
+EXEC      = carto_robot
+EXEC_SDL  = carto_robot_sdl
 
 # options
 SDL   = yes
@@ -35,6 +36,7 @@ SOURCES=geometrie.c \
 
 HEADERS=$(SOURCES:.c=.h)
 OBJECTS=$(SOURCES:.c=.o)
+OBJECTS_SDL=$(SOURCES:.c=_sdl.o)
 
 SOURCEFILES=main.c $(SOURCES) $(HEADERS) plateau.png
 
@@ -46,6 +48,8 @@ ifeq ($(SDL),yes)
 	LDFLAGS    += -lSDL -lSDL_image -lGL -lGLU -lSOIL
 	SOURCES += simulation/affichage.c
 	CFLAGS += -DUSE_SDL=1
+	OBJECTS = $(OBJECTS_SDL)
+	EXEC    = $(EXEC_SDL)
 endif
 
 ifeq ($(DEBUG),yes)
@@ -69,6 +73,8 @@ libCARTOGRAPHIE.a: $(OBJECTS)
 	ranlib $@
 
 %.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+%_sdl.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 tarall: $(SOURCEFILES)

@@ -13,7 +13,7 @@
 # Valeur par défaut
 
 CC = gcc
-
+AR = ar
 CFLAGS  = -W -Wall -fdiagnostics-color=auto -std=c99
 LDFLAGS = -lm
 # -lpthread
@@ -25,8 +25,7 @@ DEBUG = yes
 
 ################################################################################
 
-SOURCES=main.c \
-		geometrie.c \
+SOURCES=geometrie.c \
 		obstacles.c \
 		point.c \
 		pointList.c \
@@ -63,7 +62,11 @@ view: all
 all: $(EXEC)
 
 $(EXEC): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(SDLFLAGS)
+	$(CC) $(CFLAGS) -o $@ main.c $^ $(LDFLAGS) $(SDLFLAGS)
+
+libCARTOGRAPHIE.a: $(OBJECTS)
+	$(AR) -r $@ $(OBJECTS)
+	ranlib $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
@@ -72,7 +75,7 @@ tarall: $(SOURCEFILES)
 	tar -jcvf $(EXEC).tar.bz2 $^
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(EXEC) $(OBJECTS) libCARTOGRAPHIE.a
 
 mrproper: clean
-	rm -rf $(EXEC) $(EXEC).tar.bz2
+	rm -rf $(EXEC).tar.bz2

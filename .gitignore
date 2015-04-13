@@ -1,4 +1,5 @@
 *.o
+*.a
 carto_robot
 carto_robot.*
 

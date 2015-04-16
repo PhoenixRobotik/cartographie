@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "point.h"
 #if USE_SDL
-#include "simulation/affichage.h"
+#include "../common_code/simulation/affichage.h"
 #endif
 #include "bestInFirstOut.h"
 

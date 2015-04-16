@@ -1,6 +1,15 @@
 #ifndef ASTAR_H
 #define ASTAR_H
 
+#include <stdlib.h>
+#include "pointList.h"
+#include "obstacles.h"
+#include "bestInFirstOut.h"
+
+#include "debug.h"
+#if USE_SDL
+#include "../common_code/simulation/affichage.h"
+#endif
 
 void pre_astar();
 int astar(coord start, coord cible);

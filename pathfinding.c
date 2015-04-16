@@ -1,18 +1,10 @@
-#if DEBUG
-#include <stdio.h>
-#endif
 #include <stdlib.h>
-#include "geometrie.h"
-#include "point.h"
-#include "pointList.h"
-#include "obstacles.h"
-#include "bestInFirstOut.h"
 #include "astar.h"
+#include "pathfinding.h"
 
 #if USE_SDL
-#include "simulation/affichage.h"
+#include "../common_code/simulation/affichage.h"
 #endif
-#include "pathfinding.h"
 
 int pathfinding_initialized = 0;
 PointList cheminComplet;

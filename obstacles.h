@@ -1,6 +1,8 @@
 #ifndef OBSTACLES_H
 #define OBSTACLES_H
 
+#include "geometrie.h"
+
 // Structure définissant un obstacle
 typedef struct {
     int type;       // 0 pour un trait, 1 pour un cercle

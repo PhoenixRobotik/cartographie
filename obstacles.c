@@ -1,6 +1,6 @@
-#include "geometrie.h"
+#include "debug.h"
 #if USE_SDL
-#include "simulation/affichage.h"
+#include "../common_code/simulation/affichage.h"
 #endif
 #include "obstacles.h"
 
@@ -98,7 +98,7 @@ int addObstacleNonStatiqueRond(coord centre, int rayon) {
     #if USE_SDL
     dessine_obstacle_rond (obstacle.point1.x, obstacle.point1.y, obstacle.rayon + ROBOT_R);
     #endif
-    printf("%d\n", nombreObstaclesNonStatiques);
+    debug("%d\n", nombreObstaclesNonStatiques);
     return nombreObstaclesNonStatiques;
 }
 

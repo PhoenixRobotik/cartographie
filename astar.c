@@ -1,17 +1,4 @@
-#if DEBUG
-#include <stdio.h>
-#endif
-#include <stdlib.h>
-#include "geometrie.h"
-#include "point.h"
-#include "pointList.h"
-#include "obstacles.h"
-#include "bestInFirstOut.h"
 #include "astar.h"
-
-#if USE_SDL
-#include "simulation/affichage.h"
-#endif
 
 PointList VisitedPoints;
 Point realCiblePoint;
@@ -61,22 +48,14 @@ int astar(coord start, coord cible) {
     #endif
 
     // Tout d'abord on regarde si on peut aller tranquillement de start à cible :
-    #if DEBUG
-    printf("on peut aller directement ?\n"); 
+    debug("on peut aller directement ?\n"); 
     if (passagePossible(start, cible)) {
-        printf("on peut aller directement !\n");
+        debug("on peut aller directement !\n");
         // OUI !
         realCiblePoint.parentPointRank = startPointRank;
         return 1;
     }
-    printf("on ne peut pas aller directement :(\n");
-    #else
-    if (passagePossible(start, cible)) {
-        // OUI !
-        realCiblePoint.parentPointRank = startPointRank;
-        return 1;
-    }
-    #endif
+    debug("on ne peut pas aller directement :(\n");
 
     // Tant qu'il y a des points à visiter…
     while(open_size()!=0) {
@@ -129,9 +108,7 @@ int astar(coord start, coord cible) {
             }
         }
     }
-    #if DEBUG
-    printf("pas de chemin trouvé !\n");
-    #endif
+    debug("pas de chemin trouvé !\n");
     return 0;
 }
 

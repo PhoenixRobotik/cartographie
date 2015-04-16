@@ -1,6 +1,8 @@
 #ifndef POINTLIST_H
 #define POINTLIST_H
 
+#include "point.h"
+
 
 //  Cette "classe" nous permet de gérer une liste de points.
 //  Cette liste doit grandir mais on ne retire JAMAIS d'éléments.
@@ -29,10 +31,5 @@ int list_append(PointList *list, Point value);
 
 Point list_get (PointList *list, int index);
 int list_find  (PointList *list, Point point);
-
-#if DEBUG
-// Pour le debug
-int list_printf(PointList *list);
-#endif
 
 #endif // POINTLIST_H

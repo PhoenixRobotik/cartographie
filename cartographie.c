@@ -1,10 +1,8 @@
 #include <stdlib.h>
 #include "astar.h"
-#include "pathfinding.h"
+#include "cartographie.h"
 
-#if USE_SDL
-#include "../common_code/simulation/affichage.h"
-#endif
+#include "debug.h"
 
 int pathfinding_initialized = 0;
 PointList cheminComplet;

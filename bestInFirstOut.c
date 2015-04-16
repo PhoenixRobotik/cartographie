@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include "point.h"
-#if USE_SDL
-#include "../common_code/simulation/affichage.h"
-#endif
+#include "debug.h"
 #include "bestInFirstOut.h"
 
 // BIFO : Best In First Out

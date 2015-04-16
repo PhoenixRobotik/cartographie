@@ -7,9 +7,6 @@
 #include "bestInFirstOut.h"
 
 #include "debug.h"
-#if USE_SDL
-#include "../common_code/simulation/affichage.h"
-#endif
 
 void pre_astar();
 int astar(coord start, coord cible);

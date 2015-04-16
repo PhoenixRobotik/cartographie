@@ -1,7 +1,4 @@
 #include "debug.h"
-#if USE_SDL
-#include "../common_code/simulation/affichage.h"
-#endif
 #include "obstacles.h"
 
 

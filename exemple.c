@@ -1,9 +1,6 @@
 #include "debug.h"
 
-#include "pathfinding.h"
-#if USE_SDL
-#include "../common_code/simulation/affichage.h"
-#endif
+#include "cartographie.h"
 
 int x_actuel = 300;
 int y_actuel = 1000;

@@ -31,7 +31,7 @@ SOURCES=geometrie.c \
 		point.c \
 		pointList.c \
 		bestInFirstOut.c \
-		pathfinding.c \
+		cartographie.c \
 		astar.c \
 		debug.c
 
@@ -39,18 +39,18 @@ HEADERS=$(SOURCES:.c=.h)
 OBJECTS=$(SOURCES:.c=.o)
 OBJECTS_SDL=$(SOURCES:.c=_sdl.o)
 
-SOURCEFILES=main.c $(SOURCES) $(HEADERS) plateau.png
+SOURCEFILES=exemple.c $(SOURCES) $(HEADERS) plateau.png
 
 ################################################################################
 
 # Gestion des options
 
 ifeq ($(SDL),yes)
-	LDFLAGS    += -lSDL -lSDL_image -lGL -lGLU -lSOIL
+	LDFLAGS += -lSDL -lSDL_image -lGL -lGLU -lSOIL
 	SOURCES += ../common_code/simulation/affichage.c
-	CFLAGS += -DUSE_SDL=1
-	OBJECTS = $(OBJECTS_SDL)
-	EXEC    = $(EXEC_SDL)
+	CFLAGS  += -DUSE_SDL=1
+	OBJECTS  = $(OBJECTS_SDL)
+	EXEC     = $(EXEC_SDL)
 endif
 
 ifeq ($(DEBUG),yes)
@@ -67,7 +67,7 @@ view: all
 all: $(EXEC)
 
 $(EXEC): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ main.c $^ $(LDFLAGS) $(SDLFLAGS)
+	$(CC) $(CFLAGS) -o $@ exemple.c $^ $(LDFLAGS) $(SDLFLAGS)
 
 libCARTOGRAPHIE.a: $(OBJECTS)
 	$(AR) -r $@ $(OBJECTS)
@@ -82,7 +82,7 @@ tarall: $(SOURCEFILES)
 	tar -jcvf $(EXEC).tar.bz2 $^
 
 clean:
-	rm -f $(EXEC) $(OBJECTS) libCARTOGRAPHIE.a
+	rm -f $(EXEC) *.o libCARTOGRAPHIE.a
 
 mrproper: clean
 	rm -rf $(EXEC).tar.bz2

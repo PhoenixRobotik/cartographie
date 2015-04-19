@@ -120,7 +120,6 @@ int astar(coord start, coord cible) {
             }
         }
     }
-    debug("pas de chemin trouvé !\n");
     return 0;
 }
 

@@ -40,24 +40,17 @@ int pathfinding(int start_x, int start_y, int cible_x, int cible_y) {
     pre_astar();
     int astar_result = astar(start, cible);
 
-    switch(astar_result) {
-        case -1:
-            debug("Il y a eu une erreur dans l'algorithme, à débugger !\n");
-            break;
-        case  0:
-            debug("Pas de chemin trouvé…\n");
-            break;
-        case  1:
-            reconstruct_path(&cheminComplet);
-            break;
-    }
+    if(astar_result)
+        reconstruct_path(&cheminComplet);
+
     post_astar();
     return astar_result;
-
 }
+
 int return_length_of_path_found() {
     return cheminComplet.size;
 }
+
 void return_path_found(int tableau[][2]) {
     int i;
     for (i = 0; i < cheminComplet.size; ++i) {
@@ -75,5 +68,4 @@ int nouvel_obstacle_rond(int x, int y, int rayon) {
 }
 void reinitialise_obstacles_temporaires() {
     reinit_obstacles_non_statiques();
-
 }

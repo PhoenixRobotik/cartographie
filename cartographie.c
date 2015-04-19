@@ -38,13 +38,23 @@ int pathfinding(int start_x, int start_y, int cible_x, int cible_y) {
     cible.y = cible_y;
 
     pre_astar();
-    if (astar(start, cible)) {
-        reconstruct_path(&cheminComplet);
-        post_astar();
-        return 1;
+    int astar_result = astar(start, cible);
+
+    switch(astar_result) {
+        case -1:
+            debug("Il y a eu une erreur dans l'algorithme, à débugger !\n");
+            post_astar();
+            return 0;
+        case  0:
+            debug("Pas de chemin trouvé…\n");
+            post_astar();
+            return 0;
+        case  1:
+            reconstruct_path(&cheminComplet);
+            post_astar();
+            return 1;
     }
-    post_astar();
-    return 0;
+
 }
 int return_length_of_path_found() {
     return cheminComplet.size;

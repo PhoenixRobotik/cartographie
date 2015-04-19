@@ -22,8 +22,8 @@ typedef struct {
 } PointList;
 
 //  Init, free
-int list_init(PointList *list);
-int list_free(PointList *list);
+void list_init(PointList *list);
+void list_free(PointList *list);
 
 // Getters and setters
 // Retourne l'index du nouvel élément ou -1 si erreur fatale.

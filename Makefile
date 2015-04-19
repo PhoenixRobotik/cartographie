@@ -21,7 +21,7 @@ EXEC      = carto_robot
 EXEC_SDL  = carto_robot_sdl
 
 # options
-SDL   = yes
+SDL   = no
 DEBUG = yes
 
 ################################################################################

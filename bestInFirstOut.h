@@ -13,7 +13,7 @@ struct node{
 typedef struct node node;
 
 // Utilitaires de structure
-int reset_open();
+void reset_open();
 
 // Donne le meilleur point (la tête de la liste) et le supprime de la liste.
 Point pop_best_open_point();

@@ -33,14 +33,20 @@ int astar(coord start, coord cible) {
     startPoint.fScore = distance_heuristique(startPoint.coord, realCiblePoint.coord);
     // Et on l'ajoute à la liste des visités ET des ouverts TODO changer ça
     int startPointRank = list_append(&VisitedPoints, startPoint);
-    add_to_open(startPoint);
+    if (startPointRank == -1) {
+        return -1;
+    }
+    if(add_to_open(startPoint) == -1) {
+        return -1;
+    }
 
     // On définit le point d'arrivée : on récupère son voisin sur la grille
     // le plus susceptible d'être visité en premier.
-          realCiblePoint= newPoint(cible, CIBLE);
+      realCiblePoint = newPoint(cible, CIBLE);
     Point ciblePoint = trim_point(realCiblePoint);
-    if (ciblePoint.type == ERREUR)
-        return 0;
+    if (ciblePoint.type == ERREUR) {
+        return -1;
+    }
 
     #if USE_SDL
     dessine_point_passage_carto(start.x,start.y,3);
@@ -61,8 +67,9 @@ int astar(coord start, coord cible) {
     while(open_size()!=0) {
         Point visiting = pop_best_open_point();
         int visitingRank = list_append(&VisitedPoints, visiting);
-        if (visitingRank == -1)
-            return 0;
+        if (visitingRank == -1) {
+            return -1;
+        }
 
         #if USE_SDL
         dessine_point_passage_carto(visiting.coord.x,visiting.coord.y,1);
@@ -80,6 +87,9 @@ int astar(coord start, coord cible) {
         int  voisinId;
         for (voisinId = 0; voisinId < 4; ++voisinId) {
             Point voisin = getVoisin(visiting, voisinId);
+            if (voisin.type == ERREUR) {
+                return -1;
+            }
             if (!passagePossible(visiting.coord, voisin.coord))
                 continue;
 
@@ -104,7 +114,9 @@ int astar(coord start, coord cible) {
                         + distance_heuristique((*voisinOpenPointer).coord, realCiblePoint.coord);
 
                 if (!voisin_is_open)
-                    add_to_open(voisin);
+                    if (add_to_open(voisin) == -1) {
+                        return -1;
+                    }
             }
         }
     }

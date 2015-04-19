@@ -1,21 +1,19 @@
 #include <stdlib.h>
 #include "pointList.h"
 
-int list_init(PointList *list) {
+void list_init(PointList *list) {
     // initialize size and capacity
     list->size = 0;
     list->capacity = LIST_MALLOC_SIZE;
 
     // allocate memory for list->data
     list->data = malloc(sizeof(Point) * list->capacity);
-    return (list->data != NULL)-1;
 }
 
-int list_free(PointList *list) {
+void list_free(PointList *list) {
     list->size = 0;
     list->capacity = 0;
     free(list->data);
-    return (list->data == NULL)-1;
 }
 
 int list_append(PointList *list, Point value) {

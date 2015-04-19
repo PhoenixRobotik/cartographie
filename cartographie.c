@@ -43,17 +43,16 @@ int pathfinding(int start_x, int start_y, int cible_x, int cible_y) {
     switch(astar_result) {
         case -1:
             debug("Il y a eu une erreur dans l'algorithme, à débugger !\n");
-            post_astar();
-            return 0;
+            break;
         case  0:
             debug("Pas de chemin trouvé…\n");
-            post_astar();
-            return 0;
+            break;
         case  1:
             reconstruct_path(&cheminComplet);
-            post_astar();
-            return 1;
+            break;
     }
+    post_astar();
+    return astar_result;
 
 }
 int return_length_of_path_found() {

@@ -95,7 +95,7 @@ int addObstacleNonStatiqueRond(coord centre, int rayon) {
     #if USE_SDL
     dessine_obstacle_rond (obstacle.point1.x, obstacle.point1.y, obstacle.rayon + ROBOT_R);
     #endif
-    debug("%d\n", nombreObstaclesNonStatiques);
+    debug(1, "%d\n", nombreObstaclesNonStatiques);
     return nombreObstaclesNonStatiques;
 }
 

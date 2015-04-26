@@ -10,7 +10,7 @@ void new_xy_absolu(int x, int y) {
 
     // On appelle le pathfinding et on regarde si il y a un chemin
     int on_a_un_chemin = pathfinding(x_actuel, y_actuel, x, y);
-    debug("chemin trouvé ? %d\n", on_a_un_chemin);
+    debug(1, "chemin trouvé ? %d\n", on_a_un_chemin);
 
     if (on_a_un_chemin) {
 
@@ -24,11 +24,11 @@ void new_xy_absolu(int x, int y) {
         // On l'affiche
         int i;
         for (i = 0; i < taille; ++i)
-            debug("%d -- %d\n", chemin_trouve[i][0], chemin_trouve[i][1]);
+            debug(1, "%d -- %d\n", chemin_trouve[i][0], chemin_trouve[i][1]);
 
         // Et on l'exécute !
         x_actuel = x;
-        y_actuel = y;        
+        y_actuel = y;
     }
 }
 
@@ -45,8 +45,8 @@ int main() {
 
 /*    PointList cheminFinal = reconstruct_path();
 
-    debug("visited, %d\n", visitedPoints().size);
-    debug("final, %d\n", cheminFinal.size);
+    debug(1, "visited, %d\n", visitedPoints().size);
+    debug(1, "final, %d\n", cheminFinal.size);
 
     //PointList visitedPointsV = visitedPoints();
     list_printf(&cheminFinal);

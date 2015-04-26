@@ -20,11 +20,11 @@ Point trim_point(Point point) {
 }
 
 void pre_astar() {
-    list_init(&VisitedPoints);    
+    list_init(&VisitedPoints);
 }
 void post_astar() {
     list_free(&VisitedPoints);
-    reset_open();    
+    reset_open();
 }
 int astar(coord start, coord cible) {
     // On définit le point de départ
@@ -54,14 +54,14 @@ int astar(coord start, coord cible) {
     #endif
 
     // Tout d'abord on regarde si on peut aller tranquillement de start à cible :
-    debug("on peut aller directement ?\n"); 
+    debug(1, "on peut aller directement ?\n");
     if (passagePossible(start, cible)) {
-        debug("on peut aller directement !\n");
+        debug(1, "on peut aller directement !\n");
         // OUI !
         realCiblePoint.parentPointRank = startPointRank;
         return 1;
     }
-    debug("on ne peut pas aller directement :(\n");
+    debug(1, "on ne peut pas aller directement :(\n");
 
     // Tant qu'il y a des points à visiter…
     while(open_size()!=0) {

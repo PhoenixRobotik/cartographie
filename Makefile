@@ -54,7 +54,9 @@ ifeq ($(SDL),yes)
 endif
 
 ifeq ($(DEBUG),yes)
-	CFLAGS += -DDEBUG=1 -g
+	DEBUGFLAG = -DDEBUG=1 -g
+else
+	DEBUGFLAG = -DDEBUG=0
 endif
 
 ################################################################################
@@ -67,22 +69,22 @@ view: all
 all: $(EXEC)
 
 $(EXEC): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ exemple.c $^ $(LDFLAGS) $(SDLFLAGS)
+	$(CC) $(CFLAGS) -o $@ exemple.c $^ $(LDFLAGS) $(DEBUGFLAG) $(SDLFLAGS)
 
-libCARTOGRAPHIE.a: $(OBJECTS)
+libCartographie.a: $(OBJECTS)
 	$(AR) -r $@ $(OBJECTS)
 	ranlib $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) $(DEBUGFLAG) -o $@ -c $<
 %_sdl.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) $(DEBUGFLAG) -o $@ -c $<
 
 tarall: $(SOURCEFILES)
 	tar -jcvf $(EXEC).tar.bz2 $^
 
 clean:
-	rm -f $(EXEC) *.o libCARTOGRAPHIE.a
+	rm -f $(EXEC) *.o libCartographie.a
 
 mrproper: clean
 	rm -rf $(EXEC).tar.bz2

@@ -75,11 +75,13 @@ $(EXEC): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ exemple.c $^ $(LDFLAGS) $(DEBUGFLAG) $(SDLFLAGS)
 
 libCartographie.a: $(OBJECTS)
-	$(AR) -r $@ $(OBJECTS)
-	ranlib $@
+	@echo "	AR	$@"
+	@$(AR) -r $@ $(OBJECTS)
+	@echo "	RANLIB	$@"
+	@ranlib $@
 
 %.o: %.c
-	@echo "    CC  $@"
+	@echo "	CC	$@"
 	@$(CC) $(CFLAGS) $(DEBUGFLAG) -o $@ -c $<
 %_sdl.o: %.c
 	$(CC) $(CFLAGS) $(DEBUGFLAG) -o $@ -c $<

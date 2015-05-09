@@ -79,15 +79,24 @@ libCartographie.a: $(OBJECTS)
 	ranlib $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(DEBUGFLAG) -o $@ -c $<
+	@echo "    CC  $@"
+	@$(CC) $(CFLAGS) $(DEBUGFLAG) -o $@ -c $<
 %_sdl.o: %.c
 	$(CC) $(CFLAGS) $(DEBUGFLAG) -o $@ -c $<
 
-tarall: $(SOURCEFILES)
-	tar -jcvf $(EXEC).tar.bz2 $^
+
+##### Nettoyage
+.PHONY: clean cleanDist cleanLib bclean mrproper
 
 clean:
-	rm -f $(EXEC) *.o libCartographie.a
+	rm -f $(OBJECTS) $(OBJECTS_SDL)
+	rm -f libCartographie.a
 
-mrproper: clean
-	rm -rf $(EXEC).tar.bz2
+cleanDist: clean
+	$(MAKE) -C $(STM32_Dir) clean
+
+bclean:
+	$(MAKE) -C $(STM32_Dir) $@
+	rm -f $(EXEC) $(EXEC_SDL)
+
+mrproper: clean bclean

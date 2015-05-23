@@ -39,7 +39,7 @@ all: $(EXEC)
 view: $(EXEC)
 	./$^
 
-$(EXEC): $(FICHIERS_O) exemple.o $(COMMON_DIR)/$(BUILD_DIR)/libCommon.a
+$(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(COMMON_DIR)/$(BUILD_DIR)/libCommon.a
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
 	@$(CC) -o $@ $^ $(LDFLAGS)
 

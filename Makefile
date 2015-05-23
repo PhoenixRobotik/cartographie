@@ -1,104 +1,75 @@
-# Cibles :
-#    run: lance l'executable
-#    all: créer l'executable
-#    demo: lance un ensemble de commande au robot
-################################################################################
+PROJECT=cartographie
 
-# Options
-# PC ou STM32
-export ARCH  = STM32
-# yes ou no
+# Default Options
+export ARCH  = PC
+export ROBOT = gros
 export SDL   = yes
-# Niveaux de débug
 export DEBUG = _WARNING_
 
-################################################################################
-# Variables de compilation
+export PARENT_DIR = ../
+include $(PARENT_DIR)/common_code/common.mk
 
-ifeq ($(ARCH), STM32)
-	include ../stm32f407/stm32f407.mk
-else
-	CC = gcc
-	AR = ar
-	CFLAGS  = -W -Wall -fdiagnostics-color=auto -std=c99
-	LDFLAGS = -lm
-	ifeq ($(SDL),yes)
-		LDFLAGS += -lSDL -lSDL_image -lGL -lGLU -lSOIL
-		SOURCES += ../common_code/simulation/affichage.c
-		CFLAGS  += -DUSE_SDL=1
-		OBJECTS  = $(OBJECTS_SDL)
-		EXEC     = $(EXEC_SDL)
-	endif
-endif
+# Constantes de compilation
+EXEC    = carto_robot
+LIBCARTO= libCartographie
 
-ifeq ($(DEBUG),yes)
-	DEBUGFLAG = -DDEBUG=1 -g
-else
-	DEBUGFLAG = -DDEBUG=0
-endif
-
-
-# Chemin du dépôt stm32f407
-# /!\ Doit être le chemin absolu. Pas relatif.
-PathSTM32 = ../stm32f407/
-
-EXEC      = carto_robot
-EXEC_SDL  = carto_robot_sdl
 
 ################################################################################
+# Fichiers du projet
 
-SOURCES=geometrie.c \
-		obstacles.c \
-		point.c \
-		pointList.c \
-		bestInFirstOut.c \
-		cartographie.c \
-		astar.c \
-		debug.c
+FICHIERS_C = \
+	geometrie.c \
+	obstacles.c \
+	point.c \
+	pointList.c \
+	bestInFirstOut.c \
+	cartographie.c \
+	astar.c \
+	debug.c
 
-HEADERS=$(SOURCES:.c=.h)
-OBJECTS=$(SOURCES:.c=.o)
-OBJECTS_SDL=$(SOURCES:.c=_sdl.o)
-
-SOURCEFILES=exemple.c $(SOURCES) $(HEADERS) plateau.png
+FICHIERS_H = $(FICHIERS_C:.c=.h)
+FICHIERS_O  += $(addprefix $(BUILD_DIR)/, $(FICHIERS_C:.c=.o) )
 
 ################################################################################
 
 .PHONY:view
 
-view: all
-	./$(EXEC)
-
 all: $(EXEC)
 
-$(EXEC): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ exemple.c $^ $(LDFLAGS) $(DEBUGFLAG) $(SDLFLAGS)
+view: $(EXEC)
+	./$^
 
-libCartographie.a: $(OBJECTS)
+$(EXEC): $(FICHIERS_O) exemple.o $(COMMON_DIR)/$(BUILD_DIR)/libCommon.a
+	@echo "	CC	$(PROJECT)|$(notdir $@)"
+	@$(CC) -o $@ $^ $(LDFLAGS)
+
+libCartographie.a: $(FICHIERS_O)
 	@echo "	AR	$@"
-	@$(AR) -r $@ $(OBJECTS)
+	@$(AR) -q $@ $(FICHIERS_O)
 	@echo "	RANLIB	$@"
-	@ranlib $@
+	@$(RANLIB) $@
 
-%.o: %.c
-	@echo "	CC	$@"
-	@$(CC) $(CFLAGS) $(DEBUGFLAG) -o $@ -c $<
-%_sdl.o: %.c
-	$(CC) $(CFLAGS) $(DEBUGFLAG) -o $@ -c $<
+$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
+	@echo "	CC	$(PROJECT)|$(notdir $@)"
+	@$(CC) $(CFLAGS) -o $@ -c $<
+
+$(BUILD_DIR):
+	@mkdir $(BUILD_DIR) $ -p
+
+$(COMMON_DIR)/$(BUILD_DIR)/libCommon.a:
+	@$(MAKE) ARCH=$(ARCH) ROBOT=$(ROBOT) SDL=$(SDL) DEBUG=$(DEBUG) -C $(COMMON_DIR) libCommon
 
 
-##### Nettoyage
-.PHONY: clean cleanDist cleanLib bclean mrproper
+################################################################################
+# Cibles génériques
+
+.PHONY: clean mrproper
 
 clean:
-	rm -f $(OBJECTS) $(OBJECTS_SDL)
-	rm -f libCartographie.a
+	@echo "Cleaning $(PROJECT) directory…"
+	@find $(BUILD_DIR) -name '*.o' -delete
+	@rmdir -p --ignore-fail-on-non-empty $(BUILD_DIR)/*/* 2>/dev/null || true
 
-cleanDist: clean
-	$(MAKE) -C $(STM32_Dir) clean
-
-bclean:
-	$(MAKE) -C $(STM32_Dir) $@
-	rm -f $(EXEC) $(EXEC_SDL)
-
-mrproper: clean bclean
+mrproper: clean
+	@echo "Hard-cleaning  $(PROJECT) directory…"
+	@rm -rf $(EXEC) $(PIC_ELF) $(PIC_HEX)

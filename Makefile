@@ -1,7 +1,7 @@
 PROJECT=cartographie
 
 # Default Options
-export ARCH  = PC
+export ARCH  = dsPIC
 export ROBOT = gros
 export SDL   = yes
 export DEBUG = _WARNING_
@@ -36,17 +36,19 @@ FICHIERS_O  += $(addprefix $(BUILD_DIR)/, $(FICHIERS_C:.c=.o) )
 
 all: $(EXEC)
 
+libCartographie: $(BUILD_DIR)/libCartographie.a
+
 view: $(EXEC)
 	./$^
 
 $(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(COMMON_DIR)/$(BUILD_DIR)/libCommon.a
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
-	@$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
-libCartographie.a: $(FICHIERS_O)
-	@echo "	AR	$@"
-	@$(AR) -q $@ $(FICHIERS_O)
-	@echo "	RANLIB	$@"
+$(BUILD_DIR)/libCartographie.a: $(FICHIERS_O) | $(BUILD_DIR)
+	@echo "	AR	$(PROJECT)|$(notdir $@)"
+	@$(AR) -q $@ $^
+	@echo "	RANLIB	$(PROJECT)|$(notdir $@)"
 	@$(RANLIB) $@
 
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)

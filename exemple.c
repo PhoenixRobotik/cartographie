@@ -4,7 +4,7 @@
 
 int x_actuel = 300;
 int y_actuel = 1000;
-
+void new_xy_absolu(int x, int y);
 
 void set_trajectoire_xy_absolu(int x, int y) {
     new_xy_absolu(x, y);

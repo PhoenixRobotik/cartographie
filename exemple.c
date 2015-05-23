@@ -6,6 +6,9 @@ int x_actuel = 300;
 int y_actuel = 1000;
 
 
+void set_trajectoire_xy_absolu(int x, int y) {
+    new_xy_absolu(x, y);
+}
 void new_xy_absolu(int x, int y) {
 
     // On appelle le pathfinding et on regarde si il y a un chemin

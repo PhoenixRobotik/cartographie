@@ -1,5 +1,5 @@
 PROJECT=cartographie
-
+default: all
 # Default Options
 export ARCH  = dsPIC
 export ROBOT = gros
@@ -32,46 +32,24 @@ FICHIERS_O  += $(addprefix $(BUILD_DIR)/, $(FICHIERS_C:.c=.o) )
 
 ################################################################################
 
-.PHONY:view
+.PHONY: all view
 
 all: $(EXEC)
 
-libCartographie: $(BUILD_DIR)/libCartographie.a
-
 view: $(EXEC)
 	./$^
+
+libCartographie: $(BUILD_DIR)/libCartographie.a
+
+$(BUILD_DIR)/libCartographie.a: $(FICHIERS_O)
 
 $(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(COMMON_DIR)/$(BUILD_DIR)/libCommon.a
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(BUILD_DIR)/libCartographie.a: $(FICHIERS_O)
-	@echo "	AR	$(PROJECT)|$(notdir $@)"
-	@rm -f $@
-	@$(AR) -r $@ $^
-	@echo "	RANLIB	$(PROJECT)|$(notdir $@)"
-	@$(RANLIB) $@
-
-$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
-	@echo "	CC	$(PROJECT)|$(notdir $@)"
-	@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)
 
 $(COMMON_DIR)/$(BUILD_DIR)/libCommon.a:
 	@$(MAKE) ARCH=$(ARCH) ROBOT=$(ROBOT) SDL=$(SDL) DEBUG=$(DEBUG) -C $(COMMON_DIR) libCommon
-
-
-################################################################################
-# Cibles génériques
-
-.PHONY: clean mrproper
-
-clean:
-	@echo "Cleaning $(PROJECT) directory…"
-	@rm -rf build/
-
-mrproper: clean
-	@echo "Hard-cleaning  $(PROJECT) directory…"
-	@rm -rf $(EXEC) $(PIC_ELF) $(PIC_HEX)

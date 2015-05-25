@@ -45,9 +45,10 @@ $(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(COMMON_DIR)/$(BUILD_DIR)/libComm
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(BUILD_DIR)/libCartographie.a: $(FICHIERS_O) | $(BUILD_DIR)
+$(BUILD_DIR)/libCartographie.a: $(FICHIERS_O)
 	@echo "	AR	$(PROJECT)|$(notdir $@)"
-	@$(AR) -q $@ $^
+	@rm -f $@
+	@$(AR) -r $@ $^
 	@echo "	RANLIB	$(PROJECT)|$(notdir $@)"
 	@$(RANLIB) $@
 
@@ -56,7 +57,7 @@ $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(BUILD_DIR):
-	@mkdir $(BUILD_DIR) $ -p
+	@mkdir -p $(BUILD_DIR)
 
 $(COMMON_DIR)/$(BUILD_DIR)/libCommon.a:
 	@$(MAKE) ARCH=$(ARCH) ROBOT=$(ROBOT) SDL=$(SDL) DEBUG=$(DEBUG) -C $(COMMON_DIR) libCommon
@@ -69,8 +70,7 @@ $(COMMON_DIR)/$(BUILD_DIR)/libCommon.a:
 
 clean:
 	@echo "Cleaning $(PROJECT) directory…"
-	@find $(BUILD_DIR) -name '*.o' -delete
-	@rmdir -p --ignore-fail-on-non-empty $(BUILD_DIR)/*/* 2>/dev/null || true
+	@rm -rf build/
 
 mrproper: clean
 	@echo "Hard-cleaning  $(PROJECT) directory…"

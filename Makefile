@@ -1,21 +1,18 @@
 PROJECT=cartographie
 default: all
 # Default Options
-export ARCH  = dsPIC33F
-export ROBOT = gros
-export SDL   = yes
-export DEBUG = _WARNING_
+export ARCH  ?= PC
+export ROBOT ?= gros
+export SDL   ?= yes
+export DEBUG ?= _WARNING_
 
 export PARENT_DIR = ../
 include $(PARENT_DIR)/hardware/common.mk
 
-# Constantes de compilation
-EXEC    = carto_robot
-LIBCARTO= libCartographie
-
-
 ################################################################################
 # Fichiers du projet
+
+EXEC    = carto_robot
 
 FICHIERS_C = \
 	geometrie.c \

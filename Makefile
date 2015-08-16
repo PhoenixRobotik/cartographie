@@ -40,7 +40,7 @@ libCartographie: $(BUILD_DIR)/libCartographie.a
 
 $(BUILD_DIR)/libCartographie.a: $(FICHIERS_O)
 
-$(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(COMMON_DIR)/$(BUILD_DIR)/libCommon.a
+$(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(HARDW_LIB)
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
 	$(CC) -o $@ $^ $(LDFLAGS)
 

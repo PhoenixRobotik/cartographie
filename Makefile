@@ -39,14 +39,14 @@ view: $(EXEC)
 libCartographie: $(BUILD_DIR)/libCartographie.a
 
 # The dependency for the hardware lib
-$(HARDW_LIB): hardware_lib common_lib
+$(HARDW_LIB): hardware_lib
 
 
 $(BUILD_DIR)/$(LIBCARTO): $(FICHIERS_O)
 
 $(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(HARDW_LIB)
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
-	@$(CC) -o $@ $^ -lCommon $(LDFLAGS)
+	@$(CC) -o $@ $^  $(LDFLAGS)
 
 
 $(BUILD_DIR):

@@ -1,6 +1,6 @@
-#include "../common_code/debug.h"
+#include "../hardware/debug.h"
 #if USE_SDL
-#include "../common_code/simulation/affichage.h"
+#include "PC/affichage.h"
 #endif
 
 #include "point.h"

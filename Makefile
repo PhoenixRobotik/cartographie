@@ -6,13 +6,15 @@ export ROBOT ?= gros
 export SDL   ?= yes
 export DEBUG ?= 0
 
-export PARENT_DIR = ../
-include $(PARENT_DIR)/hardware/common.mk
+PARENT_DIR = ../
 
+# Constantes de compilation
+EXEC    = carto_robot
+LIBCARTO=libCartographie.a
+
+include $(PARENT_DIR)/hardware/common.mk
 ################################################################################
 # Fichiers du projet
-
-EXEC    = carto_robot
 
 FICHIERS_C = \
 	geometrie.c \
@@ -24,11 +26,9 @@ FICHIERS_C = \
 	astar.c \
 	debug.c
 
-FICHIERS_H = $(FICHIERS_C:.c=.h)
 FICHIERS_O  += $(addprefix $(BUILD_DIR)/, $(FICHIERS_C:.c=.o) )
 
 ################################################################################
-
 .PHONY: all view
 
 all: $(EXEC)
@@ -38,17 +38,24 @@ view: $(EXEC)
 
 libCartographie: $(BUILD_DIR)/libCartographie.a
 
-$(BUILD_DIR)/libCartographie.a: $(FICHIERS_O)
+# The dependency for the hardware lib
+$(HARDW_LIB): hardware_lib common_lib
+
+
+$(BUILD_DIR)/$(LIBCARTO): $(FICHIERS_O)
 
 $(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(HARDW_LIB)
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
 	@$(CC) -o $@ $^ -lCommon $(LDFLAGS)
 
-$(HARDW_LIB): hardware_lib $(COMMON_DIR)/$(BUILD_DIR)/libCommon.a
-
 
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)
 
-$(COMMON_DIR)/$(BUILD_DIR)/libCommon.a:
-	@$(MAKE) ARCH=$(ARCH) ROBOT=$(ROBOT) SDL=$(SDL) DEBUG=$(DEBUG) -C $(COMMON_DIR) libCommon
+
+################################################################################
+# Cibles génériques
+
+mrproper: clean
+	@echo "Hard-cleaning  $(PROJECT) directory…"
+	@rm -rf $(EXEC) $(LIBCARTO)

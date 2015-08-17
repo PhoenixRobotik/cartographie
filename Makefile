@@ -4,7 +4,7 @@ default: all
 export ARCH  ?= PC
 export ROBOT ?= gros
 export SDL   ?= yes
-export DEBUG ?= _WARNING_
+export DEBUG ?= 0
 
 export PARENT_DIR = ../
 include $(PARENT_DIR)/hardware/common.mk
@@ -42,7 +42,9 @@ $(BUILD_DIR)/libCartographie.a: $(FICHIERS_O)
 
 $(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(HARDW_LIB)
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
-	$(CC) -o $@ $^ $(LDFLAGS)
+	@$(CC) -o $@ $^ -lCommon $(LDFLAGS)
+
+$(HARDW_LIB): hardware_lib $(COMMON_DIR)/$(BUILD_DIR)/libCommon.a
 
 
 $(BUILD_DIR):

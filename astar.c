@@ -1,5 +1,7 @@
 #include "astar.h"
-
+#if USE_SDL
+#include "hardware.h"
+#endif
 PointList VisitedPoints;
 Point realCiblePoint;
 

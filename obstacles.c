@@ -1,5 +1,8 @@
 #include "debug.h"
 #include "obstacles.h"
+#if USE_SDL
+#include "hardware.h"
+#endif
 
 
 Obstacle ObstaclesStatiques[NOMBRE_OBSTACLES_STATIQUES];

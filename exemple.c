@@ -54,9 +54,6 @@ int main() {
     //PointList visitedPointsV = visitedPoints();
     list_printf(&cheminFinal);
 */
-#if USE_SDL
-    while(!sdl_manage_events());
-#endif
 
     return 0;
 }

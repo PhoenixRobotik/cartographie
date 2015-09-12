@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "astar.h"
 #include "cartographie.h"
+#include "hardware.h"
 
 #include "debug.h"
 
@@ -10,8 +11,7 @@ PointList cheminComplet;
 void pathfinding_init() {
     addAllObstaclesStatiques();
     #if USE_SDL
-    init_sdl_screen();
-    dessine_fond();
+    init_hardware();
     int i;
     for (i = 0; i < NOMBRE_OBSTACLES_STATIQUES; ++i) {
         Obstacle obstacle = getObstacleStatique(i);

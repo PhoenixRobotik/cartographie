@@ -10,7 +10,6 @@ PARENT_DIR = ../
 
 # Constantes de compilation
 EXEC    = carto_robot
-LIBCARTO=libCartographie.a
 
 include $(PARENT_DIR)/hardware/common.mk
 ################################################################################
@@ -36,18 +35,13 @@ all: $(EXEC)
 view: $(EXEC)
 	./$^
 
-libCartographie: $(BUILD_DIR)/libCartographie.a
+_libCarto: $(CARTO_LIB)
 
-# The dependency for the hardware lib
-$(HARDW_LIB): hardware_lib
+$(CARTO_LIB): $(FICHIERS_O)
 
-
-$(BUILD_DIR)/$(LIBCARTO): $(FICHIERS_O)
-
-$(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(HARDW_LIB)
+$(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o libHardware
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
-	@$(CC) -o $@ $^  $(LDFLAGS)
-
+	@$(CC) $(HARDW_LIB) $(LDFLAGS) -o $@ $(FICHIERS_O) $(BUILD_DIR)/exemple.o
 
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)

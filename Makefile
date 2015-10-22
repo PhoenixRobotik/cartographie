@@ -28,28 +28,15 @@ FICHIERS_C = \
 FICHIERS_O  += $(addprefix $(BUILD_DIR)/, $(FICHIERS_C:.c=.o) )
 
 ################################################################################
-.PHONY: all view
-
-all: $(EXEC)
-
-view: $(EXEC)
-	./$^
+all: $(BUILD_DIR)/$(EXEC)
 
 _libCarto: $(BUILD_DIR)/libCarto.a
 
 $(BUILD_DIR)/libCarto.a: $(FICHIERS_O)
 
-$(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o libHardware
+$(BUILD_DIR)/$(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o libHardware
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
-	@$(CC) -o $@ $(FICHIERS_O) $(BUILD_DIR)/exemple.o -lHardware $(LDFLAGS) 
+	@$(CC) -o $@ $(FICHIERS_O) $(BUILD_DIR)/exemple.o -lHardware $(LDFLAGS)
 
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)
-
-
-################################################################################
-# Cibles génériques
-
-mrproper: clean
-	@echo "Hard-cleaning  $(PROJECT) directory…"
-	@rm -rf $(EXEC) $(LIBCARTO)

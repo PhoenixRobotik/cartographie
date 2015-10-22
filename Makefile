@@ -35,9 +35,9 @@ all: $(EXEC)
 view: $(EXEC)
 	./$^
 
-_libCarto: $(CARTO_LIB)
+_libCarto: $(BUILD_DIR)/libCarto.a
 
-$(CARTO_LIB): $(FICHIERS_O)
+$(BUILD_DIR)/libCarto.a: $(FICHIERS_O)
 
 $(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o libHardware
 	@echo "	CC	$(PROJECT)|$(notdir $@)"

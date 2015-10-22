@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include "astar.h"
 #include "cartographie.h"
+#if USE_SDL
 #include "hardware.h"
+#endif
 
 #include "debug.h"
 

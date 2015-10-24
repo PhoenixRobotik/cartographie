@@ -68,11 +68,11 @@ int add_to_open(Point newPoint) {
         newNode->next = current->next;
         current->next = newNode;
     }
-/*
+
     #if USE_SDL
     dessine_point_passage_carto(newPoint.coord.x,newPoint.coord.y,0);
     #endif
-    */
+
     return openCount++;
 }
 

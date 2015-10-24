@@ -13,7 +13,6 @@ PointList cheminComplet;
 void pathfinding_init() {
     addAllObstaclesStatiques();
     #if USE_SDL
-    init_hardware();
     int i;
     for (i = 0; i < NOMBRE_OBSTACLES_STATIQUES; ++i) {
         Obstacle obstacle = getObstacleStatique(i);

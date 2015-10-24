@@ -6,6 +6,17 @@ int x_actuel = 300;
 int y_actuel = 1000;
 void new_xy_absolu(int x, int y);
 
+float float_get_x_actuel(){
+    return x_actuel;
+}
+float float_get_y_actuel(){
+    return y_actuel;
+
+}
+int get_theta_actuel(){
+    return 0;
+}
+
 void set_trajectoire_xy_absolu(int x, int y) {
     new_xy_absolu(x, y);
 }
@@ -37,23 +48,10 @@ void new_xy_absolu(int x, int y) {
 
 
 int main() {
+    init_hardware_GTK();
     pathfinding_init();
-    nouvel_obstacle_rond(1500, 1200, 200);
-    new_xy_absolu(2700,1600);
-    new_xy_absolu(300,1600);
-    new_xy_absolu(2700,1600);
 
-   // pathfinding(330, 1800,
-   //            2600, 1003);
-
-/*    PointList cheminFinal = reconstruct_path();
-
-    debug(1, "visited, %d\n", visitedPoints().size);
-    debug(1, "final, %d\n", cheminFinal.size);
-
-    //PointList visitedPointsV = visitedPoints();
-    list_printf(&cheminFinal);
-*/
+    pause();
 
     return 0;
 }

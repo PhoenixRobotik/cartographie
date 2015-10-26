@@ -3,7 +3,7 @@ default: all
 # Default Options
 export ARCH  ?= PC
 export ROBOT ?= gros
-export SDL   ?= no
+export SDL   ?= yes
 export DEBUG ?= 0
 
 PARENT_DIR = ../
@@ -36,7 +36,7 @@ $(BUILD_DIR)/libCarto.a: $(FICHIERS_O)
 
 $(BUILD_DIR)/$(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o libHardware
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
-	@$(CC) $(CFLAGS) -o $@ $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(LDFLAGS) -lHardware
+	@$(++) $(CFLAGS) -o $@ $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(LDFLAGS) -lHardware
 
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)

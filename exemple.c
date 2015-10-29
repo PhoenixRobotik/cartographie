@@ -48,7 +48,6 @@ void new_xy_absolu(int x, int y) {
 
 
 int main() {
-    init_hardware_GTK();
     pathfinding_init();
 
     pause();

@@ -51,8 +51,8 @@ int astar(coord start, coord cible) {
     }
 
     #if USE_SDL
-    dessine_point_passage_carto(start.x,start.y,3);
-    dessine_point_passage_carto(cible.x,cible.y,3);
+    dessine_point_passage_carto(start.x,start.y,4);
+    dessine_point_passage_carto(cible.x,cible.y,4);
     #endif
 
     // Tout d'abord on regarde si on peut aller tranquillement de start à cible :
@@ -136,6 +136,9 @@ Point get_precedent_theta_start(Point current) {
     precedent = list_get(&VisitedPoints, current.parentPointRank);
     if (precedent.type == DEBUT)
         return precedent;
+    #if USE_SDL
+    dessine_point_passage_carto(precedent.coord.x, precedent.coord.y, 2);
+    #endif
     subprecedent = list_get(&VisitedPoints, precedent.parentPointRank);
     if (passagePossible(current.coord, subprecedent.coord)) {
         current.parentPointRank = precedent.parentPointRank;
@@ -161,7 +164,7 @@ int reconstruct_path(PointList *cheminComplet) {
         list_append(&cheminInverse, current);
         #if USE_SDL
         dessine_obstacle_ligne(old.x, old.y, current.coord.x, current.coord.y);
-        dessine_point_passage_carto(current.coord.x, current.coord.y, 2);
+        dessine_point_passage_carto(current.coord.x, current.coord.y, 3);
         old = current.coord;
         #endif
         current = get_precedent_theta_start(current);
@@ -169,7 +172,7 @@ int reconstruct_path(PointList *cheminComplet) {
 
     #if USE_SDL
     dessine_obstacle_ligne(old.x, old.y, current.coord.x, current.coord.y);
-    dessine_point_passage_carto(current.coord.x, current.coord.y, 2);
+    dessine_point_passage_carto(current.coord.x, current.coord.y, 3);
     #endif
     list_append(&cheminInverse, current);
 

@@ -40,6 +40,7 @@ int pathfinding(int start_x, int start_y, int cible_x, int cible_y) {
 
     pre_astar();
     int astar_result = astar(start, cible);
+    debug(1, "astar_result : %d\n", astar_result);
 
     if(astar_result)
         reconstruct_path(&cheminComplet);

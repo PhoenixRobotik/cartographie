@@ -36,9 +36,13 @@ int astar(coord start, coord cible) {
     // Et on l'ajoute à la liste des visités ET des ouverts TODO changer ça
     int startPointRank = list_append(&VisitedPoints, startPoint);
     if (startPointRank == -1) {
+        debug(1, "Erreur dans le code ? à startPoint:%d:%d\n",
+            startPoint.coord.x, startPoint.coord.y);
         return -1;
     }
     if(add_to_open(startPoint) == -1) {
+        debug(1, "Erreur dans le code ? à startpoint:%d:%d\n",
+            startPoint.coord.x, startPoint.coord.y);
         return -1;
     }
 
@@ -47,7 +51,7 @@ int astar(coord start, coord cible) {
       realCiblePoint = newPoint(cible, CIBLE);
     Point ciblePoint = trim_point(realCiblePoint);
     if (ciblePoint.type == ERREUR) {
-        return -1;
+        return 0;
     }
 
     #if USE_SDL
@@ -70,7 +74,9 @@ int astar(coord start, coord cible) {
         Point visiting = pop_best_open_point();
         int visitingRank = list_append(&VisitedPoints, visiting);
         if (visitingRank == -1) {
-            return -1;
+            // Si il y a eu un overflow…
+            debug(1, "Overflow à %d:%d\n", visiting.coord.x, visiting.coord.y);
+            return 0;
         }
 
         #if USE_SDL
@@ -90,6 +96,7 @@ int astar(coord start, coord cible) {
         for (voisinId = 0; voisinId < 4; ++voisinId) {
             Point voisin = getVoisin(visiting, voisinId);
             if (voisin.type == ERREUR) {
+                debug(1, "Voisin impossible : %d\n", voisinId);
                 return -1;
             }
             if (!passagePossible(visiting.coord, voisin.coord))
@@ -117,6 +124,7 @@ int astar(coord start, coord cible) {
 
                 if (!voisin_is_open)
                     if (add_to_open(voisin) == -1) {
+                        debug(1, "Overflow à %d:%d\n", voisin.coord.x, voisin.coord.y);
                         return -1;
                     }
             }

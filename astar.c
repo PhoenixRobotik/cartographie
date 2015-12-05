@@ -33,7 +33,7 @@ int astar(coord start, coord cible) {
     Point startPoint= newPoint(start, DEBUT);
     startPoint.gScore = 0;
     startPoint.fScore = distance_heuristique(startPoint.coord, realCiblePoint.coord);
-    // Et on l'ajoute à la liste des visités ET des ouverts TODO changer ça
+    // Et on l'ajoute à la liste des visités ET des ouverts
     int startPointRank = list_append(&VisitedPoints, startPoint);
     if (startPointRank == -1) {
         debug(1, "Erreur dans le code ? à startPoint:%d:%d\n",

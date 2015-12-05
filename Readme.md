@@ -11,7 +11,7 @@ Cette fonction devrait être appelée au démarrage du robot.
 Si elle n'est pas appelée au démarrage, elle l'est à la première recherche de chemin.
 
  int pathfinding(int start_x, int start_y, int cible_x, int cible_y);
-Retourne 0 si pas de chemin trouvé, et sinon 1 (TODO : longueur du chemin)
+Retourne 0 si pas de chemin trouvé, et sinon la longueur du chemin
 
  int return_length_of_path_found();
 Retourne la longueur du chemin

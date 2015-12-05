@@ -46,7 +46,7 @@ int pathfinding(int start_x, int start_y, int cible_x, int cible_y) {
         reconstruct_path(&cheminComplet);
 
     post_astar();
-    return astar_result;
+    return cheminComplet.size;
 }
 
 int return_length_of_path_found() {

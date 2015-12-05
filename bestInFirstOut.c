@@ -29,7 +29,7 @@ void reset_open() {
 Point pop_best_open_point() {
     Point bestOpenPoint;
 
-    //TODO Il y a là une erreur à gérer
+    //Il y a là une erreur à gérer
     if (openCount == 0)
         return errorPoint();
 

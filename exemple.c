@@ -23,26 +23,24 @@ void set_trajectoire_xy_absolu(int x, int y) {
 void new_xy_absolu(int x, int y) {
 
     // On appelle le pathfinding et on regarde si il y a un chemin
-    int on_a_un_chemin = pathfinding(x_actuel, y_actuel, x, y);
-    debug(1, "chemin trouvé ? %d\n", on_a_un_chemin);
+    int longueur_chemin_trouve = pathfinding(x_actuel, y_actuel, x, y);
 
-    if (on_a_un_chemin) {
-
-        // On récupère le nombre de points de ce chemin
-        int taille = return_length_of_path_found();
-
+    if (longueur_chemin_trouve > 0) {
+        debug(1, "Chemin trouvé de %d points\n", on_a_un_chemin);
         // On récupère le chemin lui-même
-        int chemin_trouve[taille][2];
+        int chemin_trouve[longueur_chemin_trouve][2];
         return_path_found(chemin_trouve);
 
         // On l'affiche
         int i;
-        for (i = 0; i < taille; ++i)
+        for (i = 0; i < longueur_chemin_trouve; ++i)
             debug(1, "%d -- %d\n", chemin_trouve[i][0], chemin_trouve[i][1]);
 
         // Et on l'exécute !
         x_actuel = x;
         y_actuel = y;
+    } else {
+        debug(1, "Pas de chemin trouvé\n");
     }
 }
 

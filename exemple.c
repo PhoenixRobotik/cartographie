@@ -26,7 +26,7 @@ void new_xy_absolu(int x, int y) {
     int longueur_chemin_trouve = pathfinding(x_actuel, y_actuel, x, y);
 
     if (longueur_chemin_trouve > 0) {
-        debug(1, "Chemin trouvé de %d points\n", on_a_un_chemin);
+        debug(1, "Chemin trouvé de %d points\n", longueur_chemin_trouve);
         // On récupère le chemin lui-même
         int chemin_trouve[longueur_chemin_trouve][2];
         return_path_found(chemin_trouve);

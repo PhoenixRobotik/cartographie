@@ -36,7 +36,7 @@ $(BUILD_DIR)/libCarto.a: $(FICHIERS_O)
 
 $(BUILD_DIR)/$(EXEC): $(FICHIERS_O) $(BUILD_DIR)/exemple.o libHardware
 	@echo "	CC	$(PROJECT)|$(notdir $@)"
-	@$(++) $(CFLAGS) -o $@ $(FICHIERS_O) $(BUILD_DIR)/exemple.o $(LDFLAGS) -lHardware
+	$(CC) $(CFLAGS) -o $@ $(FICHIERS_O) $(BUILD_DIR)/exemple.o -lHardware $(LDFLAGS)
 
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)

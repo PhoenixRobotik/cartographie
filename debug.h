@@ -1,4 +1,4 @@
-#include "../hardware/debug.h"
+#include <debug.h>
 #if USE_SDL
 
 #endif

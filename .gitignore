@@ -1,6 +1,12 @@
-*.o
-*.a
-carto_robot*
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+
+cartographieExemple
+libcartographieLib.a
+Librairie.cmake
+
 
 plateau.png
 plateau.xcf

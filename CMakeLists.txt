@@ -3,24 +3,12 @@
 ####################################################################
 cmake_minimum_required(VERSION 3.4 FATAL_ERROR)
 
+# Toolchain = architecture utilisée
+include("../toolchains/libopencm3.cmake")
+
 project (PhoenixCartographie)
 set     (PhoenixCartographie_VERSION_MAJOR 0)
 set     (PhoenixCartographie_VERSION_MINOR 1)
-
-####################################################################
-#   C++14 / C11 flags
-####################################################################
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_C_STANDARD 11)
-
-set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG=3")
-set(CMAKE_C_FLAGS_DEBUG "-DDEBUG=3")
-set(CMAKE_CXX_FLAGS_RELEASE "-DDEBUG=0")
-set(CMAKE_C_FLAGS_RELEASE "-DDEBUG=0")
-
-add_definitions("-Wall")
-# Clean unused sections on link
-add_definitions("-ffunction-sections -fdata-sections -Wl,--gc-sections")
 
 ####################################################################
 #   Source

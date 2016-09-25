@@ -1,14 +1,17 @@
+## CMake
 CMakeCache.txt
 CMakeFiles
 Makefile
+Librairie.cmake
 cmake_install.cmake
 
+## Les fichiers compilés
+*.a
 cartographieExemple
-libcartographieLib.a
-Librairie.cmake
 
-
+## Data
 plateau.png
 plateau.xcf
 
 massif.out.*
+

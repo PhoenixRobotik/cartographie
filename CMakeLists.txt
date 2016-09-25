@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.4 FATAL_ERROR)
 
 # Toolchain = architecture utilisée
-include("../toolchains/libopencm3.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/../toolchains/$ENV{ARCH}.cmake")
 
 project (PhoenixCartographie)
 set     (PhoenixCartographie_VERSION_MAJOR 0)

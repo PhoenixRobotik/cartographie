@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.4 FATAL_ERROR)
 
 # Toolchain = architecture utilisée
-include("${CMAKE_CURRENT_SOURCE_DIR}/../toolchains/$ENV{ARCH}.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/../toolchains/${ARCH}.cmake")
 
 project (PhoenixCartographie)
 set     (PhoenixCartographie_VERSION_MAJOR 0)

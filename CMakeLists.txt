@@ -13,13 +13,9 @@ set     (PhoenixCartographie_VERSION_MINOR 1)
 ####################################################################
 #   Source
 ####################################################################
-# Déclaration du nom (public) de la librairie
-set(Library cartographieLib)
-
-
 ## Déclaration de la librairie aux projets qui utilisent celui-ci
 # Déclaration des sources de la librairie
-add_library(${Library} STATIC
+add_library(${PROJECT_NAME}Lib STATIC
     geometrie.c
     obstacles.c
     point.c
@@ -30,22 +26,24 @@ add_library(${Library} STATIC
     debug.c
 )
 # Includes publics
-target_include_directories(${Library} INTERFACE
+target_include_directories(${PROJECT_NAME}Lib INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
-target_link_libraries(${Library} INTERFACE
+target_link_libraries(${PROJECT_NAME}Lib INTERFACE
     m
 )
 
 # Librairie à linker
-export(TARGETS ${Library} FILE Librairie.cmake)
+export(TARGETS ${PROJECT_NAME}Lib FILE Librairie.cmake)
 
 include_directories(..)
 
-add_executable(cartographieExemple
+add_executable(${PROJECT_NAME}Exemple
     ${CMAKE_CURRENT_SOURCE_DIR}/exemple.c
 )
-target_link_libraries(cartographieExemple
-    ${Library}
+add_executable(main_binary ALIAS ${PROJECT_NAME}Exemple)
+target_link_libraries(${PROJECT_NAME}
+    ${PROJECT_NAME}Lib
 )

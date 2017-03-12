@@ -3,12 +3,11 @@
 ####################################################################
 cmake_minimum_required(VERSION 3.4 FATAL_ERROR)
 
-# Toolchain = architecture utilisée
-include("${CMAKE_CURRENT_SOURCE_DIR}/../toolchains/${ARCH}.cmake")
-
 project (PhoenixCartographie)
 set     (PhoenixCartographie_VERSION_MAJOR 0)
 set     (PhoenixCartographie_VERSION_MINOR 1)
+
+include(${GenericCmakeLists})
 
 ####################################################################
 #   Source
@@ -44,6 +43,7 @@ add_executable(${PROJECT_NAME}Exemple
     ${CMAKE_CURRENT_SOURCE_DIR}/exemple.c
 )
 add_executable(main_binary ALIAS ${PROJECT_NAME}Exemple)
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${PROJECT_NAME}Exemple
     ${PROJECT_NAME}Lib
+    ${Toolchain_LFlags}
 )
